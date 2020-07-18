@@ -31,7 +31,8 @@ OBJS		= kernel/kernel.o kernel/start.o kernel/main.o\
 			kernel/clock.o kernel/keyboard.o kernel/tty.o kernel/console.o\
 			kernel/i8259.o kernel/global.o kernel/protect.o kernel/proc.o\
 			kernel/systask.o kernel/hd.o\
-			kernel/kliba.o kernel/klib.o kernel/tools/welcome.o\
+			kernel/kliba.o kernel/klib.o\
+			kernel/tools/welcome.o kernel/tools/fs.o kernel/tools/user.o\
 			lib/syslog.o\
 			mm/main.o mm/forkexit.o mm/exec.o\
 			fs/main.o fs/open.o fs/misc.o fs/read_write.o\
@@ -130,6 +131,12 @@ kernel/proc.o: kernel/proc.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 kernel/tools/welcome.o: kernel/tools/welcome.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/tools/fs.o: kernel/tools/fs.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/tools/user.o: kernel/tools/user.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 lib/printf.o: lib/printf.c
