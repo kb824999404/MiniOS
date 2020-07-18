@@ -19,7 +19,7 @@ lib/orangescrt.a(syscall.o)   lib/orangescrt.a(misc.o) (sendrec)
 分配公共符号
 公共符号            大小              文件
 
-filequeue           0xc8              kernel/main.o
+filequeue           0xc8              kernel/tools/fs.o
 idt_ptr             0x6               kernel/global.o
 inode_table         0xb00             kernel/global.o
 task_stack          0x24000           kernel/global.o
@@ -34,7 +34,7 @@ memory_size         0x4               kernel/global.o
 f_desc_table        0x400             kernel/global.o
 root_inode          0x4               kernel/global.o
 disp_pos            0x4               kernel/global.o
-files               0xa00             kernel/main.o
+files               0xa00             kernel/tools/fs.o
 mm_msg              0x30              kernel/global.o
 key_pressed         0x4               kernel/global.o
 gdt_ptr             0x6               kernel/global.o
@@ -44,7 +44,7 @@ super_block         0x1e0             kernel/global.o
 PARTITION_ENTRY     0x10              kernel/hd.o
 ticks               0x4               kernel/global.o
 console_table       0x3c              kernel/global.o
-userfiles           0xa00             kernel/main.o
+userfiles           0xa00             kernel/tools/fs.o
 irq_table           0x40              kernel/global.o
 p_proc_ready        0x4               kernel/global.o
 proc_table          0x3af8            kernel/global.o
@@ -663,33 +663,33 @@ LOAD lib/orangescrt.a
  *(.data .data.* .gnu.linkonce.d.*)
  .data          0x0000000000014120        0x2 kernel/kernel.o
  .data          0x0000000000014122        0x0 kernel/start.o
+ .data          0x0000000000014122        0x0 kernel/main.o
+ .data          0x0000000000014122        0x0 kernel/clock.o
  *fill*         0x0000000000014122       0x1e 
- .data          0x0000000000014140       0x80 kernel/main.o
-                0x0000000000014140                currentFolder
- .data          0x00000000000141c0        0x0 kernel/clock.o
- .data          0x00000000000141c0      0x600 kernel/keyboard.o
-                0x00000000000141c0                keymap
- .data          0x00000000000147c0       0x22 kernel/tty.o
- .data          0x00000000000147e2        0x0 kernel/console.o
- .data          0x00000000000147e2        0x0 kernel/i8259.o
- *fill*         0x00000000000147e2       0x1e 
- .data          0x0000000000014800      0x1b4 kernel/global.o
-                0x0000000000014800                task_table
-                0x00000000000148e0                user_proc_table
-                0x0000000000014980                sys_call_table
-                0x000000000001498c                dd_map
-                0x00000000000149a4                fsbuf
-                0x00000000000149a8                mmbuf
-                0x00000000000149ac                logbuf
-                0x00000000000149b0                logdiskbuf
- .data          0x00000000000149b4        0x0 kernel/protect.o
- .data          0x00000000000149b4        0x0 kernel/proc.o
- .data          0x00000000000149b4        0x0 kernel/systask.o
- .data          0x00000000000149b4        0x0 kernel/hd.o
- .data          0x00000000000149b4        0x0 kernel/klib.o
- .data          0x00000000000149b4        0x0 kernel/tools/welcome.o
- .data          0x00000000000149b4        0x0 kernel/tools/fs.o
- *fill*         0x00000000000149b4        0xc 
+ .data          0x0000000000014140      0x600 kernel/keyboard.o
+                0x0000000000014140                keymap
+ .data          0x0000000000014740       0x22 kernel/tty.o
+ .data          0x0000000000014762        0x0 kernel/console.o
+ .data          0x0000000000014762        0x0 kernel/i8259.o
+ *fill*         0x0000000000014762       0x1e 
+ .data          0x0000000000014780      0x1b4 kernel/global.o
+                0x0000000000014780                task_table
+                0x0000000000014860                user_proc_table
+                0x0000000000014900                sys_call_table
+                0x000000000001490c                dd_map
+                0x0000000000014924                fsbuf
+                0x0000000000014928                mmbuf
+                0x000000000001492c                logbuf
+                0x0000000000014930                logdiskbuf
+ .data          0x0000000000014934        0x0 kernel/protect.o
+ .data          0x0000000000014934        0x0 kernel/proc.o
+ .data          0x0000000000014934        0x0 kernel/systask.o
+ .data          0x0000000000014934        0x0 kernel/hd.o
+ .data          0x0000000000014934        0x0 kernel/klib.o
+ .data          0x0000000000014934        0x0 kernel/tools/welcome.o
+ *fill*         0x0000000000014934        0xc 
+ .data          0x0000000000014940       0x80 kernel/tools/fs.o
+                0x0000000000014940                currentFolder
  .data          0x00000000000149c0       0x84 kernel/tools/user.o
                 0x00000000000149c0                currentUser
                 0x0000000000014a40                currentUserIndex
@@ -729,26 +729,26 @@ LOAD lib/orangescrt.a
  *(.bss .bss.* .gnu.linkonce.b.*)
  .bss           0x0000000000014a60      0x800 kernel/kernel.o
  .bss           0x0000000000015260        0x0 kernel/start.o
- .bss           0x0000000000015260       0x8c kernel/main.o
-                0x0000000000015260                filepath
-                0x00000000000152e0                filecount
-                0x00000000000152e4                isEntered
-                0x00000000000152e8                leiflag
- .bss           0x00000000000152ec        0x0 kernel/clock.o
- *fill*         0x00000000000152ec       0x14 
- .bss           0x0000000000015300       0x58 kernel/keyboard.o
- .bss           0x0000000000015358        0x0 kernel/tty.o
- .bss           0x0000000000015358        0x0 kernel/console.o
- .bss           0x0000000000015358        0x0 kernel/i8259.o
- .bss           0x0000000000015358        0x0 kernel/global.o
- .bss           0x0000000000015358        0x0 kernel/protect.o
- .bss           0x0000000000015358        0x0 kernel/proc.o
- .bss           0x0000000000015358        0x0 kernel/systask.o
- *fill*         0x0000000000015358        0x8 
- .bss           0x0000000000015360      0x64c kernel/hd.o
- .bss           0x00000000000159ac        0x0 kernel/klib.o
- .bss           0x00000000000159ac        0x0 kernel/tools/welcome.o
- .bss           0x00000000000159ac        0x0 kernel/tools/fs.o
+ .bss           0x0000000000015260        0x0 kernel/main.o
+ .bss           0x0000000000015260        0x0 kernel/clock.o
+ .bss           0x0000000000015260       0x58 kernel/keyboard.o
+ .bss           0x00000000000152b8        0x0 kernel/tty.o
+ .bss           0x00000000000152b8        0x0 kernel/console.o
+ .bss           0x00000000000152b8        0x0 kernel/i8259.o
+ .bss           0x00000000000152b8        0x0 kernel/global.o
+ .bss           0x00000000000152b8        0x0 kernel/protect.o
+ .bss           0x00000000000152b8        0x0 kernel/proc.o
+ .bss           0x00000000000152b8        0x0 kernel/systask.o
+ *fill*         0x00000000000152b8        0x8 
+ .bss           0x00000000000152c0      0x64c kernel/hd.o
+ .bss           0x000000000001590c        0x0 kernel/klib.o
+ .bss           0x000000000001590c        0x0 kernel/tools/welcome.o
+ *fill*         0x000000000001590c       0x14 
+ .bss           0x0000000000015920       0x8c kernel/tools/fs.o
+                0x0000000000015920                filepath
+                0x00000000000159a0                filecount
+                0x00000000000159a4                isEntered
+                0x00000000000159a8                leiflag
  .bss           0x00000000000159ac        0x4 kernel/tools/user.o
                 0x00000000000159ac                usercount
  .bss           0x00000000000159b0        0x0 lib/syslog.o
@@ -777,38 +777,38 @@ LOAD lib/orangescrt.a
  .bss           0x0000000000015bc8        0x0 lib/orangescrt.a(exec.o)
  *(COMMON)
  *fill*         0x0000000000015bc8       0x18 
- COMMON         0x0000000000015be0     0x14e0 kernel/main.o
-                0x0000000000015be0                filequeue
-                0x0000000000015cc0                files
-                0x00000000000166c0                userfiles
- COMMON         0x00000000000170c0    0x2a698 kernel/global.o
-                0x00000000000170c0                idt_ptr
-                0x00000000000170e0                inode_table
-                0x0000000000017be0                task_stack
-                0x000000000003bbe0                k_reenter
-                0x000000000003bc00                gdt
-                0x000000000003c000                current_console
-                0x000000000003c004                pcaller
-                0x000000000003c020                tty_table
-                0x000000000003cca0                tss
-                0x000000000003cd20                fs_msg
-                0x000000000003cd50                memory_size
-                0x000000000003cd60                f_desc_table
-                0x000000000003d160                root_inode
-                0x000000000003d164                disp_pos
-                0x000000000003d180                mm_msg
-                0x000000000003d1b0                key_pressed
-                0x000000000003d1b4                gdt_ptr
-                0x000000000003d1c0                idt
-                0x000000000003d9c0                super_block
-                0x000000000003dba0                ticks
-                0x000000000003dbc0                console_table
-                0x000000000003dc00                irq_table
-                0x000000000003dc40                p_proc_ready
-                0x000000000003dc60                proc_table
- COMMON         0x0000000000041758       0x10 kernel/hd.o
-                0x0000000000041758                PARTITION_ENTRY
- *fill*         0x0000000000041768       0x18 
+ COMMON         0x0000000000015be0    0x2a698 kernel/global.o
+                0x0000000000015be0                idt_ptr
+                0x0000000000015c00                inode_table
+                0x0000000000016700                task_stack
+                0x000000000003a700                k_reenter
+                0x000000000003a720                gdt
+                0x000000000003ab20                current_console
+                0x000000000003ab24                pcaller
+                0x000000000003ab40                tty_table
+                0x000000000003b7c0                tss
+                0x000000000003b840                fs_msg
+                0x000000000003b870                memory_size
+                0x000000000003b880                f_desc_table
+                0x000000000003bc80                root_inode
+                0x000000000003bc84                disp_pos
+                0x000000000003bca0                mm_msg
+                0x000000000003bcd0                key_pressed
+                0x000000000003bcd4                gdt_ptr
+                0x000000000003bce0                idt
+                0x000000000003c4e0                super_block
+                0x000000000003c6c0                ticks
+                0x000000000003c6e0                console_table
+                0x000000000003c720                irq_table
+                0x000000000003c760                p_proc_ready
+                0x000000000003c780                proc_table
+ COMMON         0x0000000000040278       0x10 kernel/hd.o
+                0x0000000000040278                PARTITION_ENTRY
+ *fill*         0x0000000000040288       0x18 
+ COMMON         0x00000000000402a0     0x14e0 kernel/tools/fs.o
+                0x00000000000402a0                filequeue
+                0x0000000000040380                files
+                0x0000000000040d80                userfiles
  COMMON         0x0000000000041780      0xa00 kernel/tools/user.o
                 0x0000000000041780                users
                 0x0000000000042180                . = ALIGN ((. != 0x0)?0x4:0x1)

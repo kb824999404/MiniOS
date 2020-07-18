@@ -3,6 +3,7 @@
                             main.c
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                     Forrest Yu, 2005
+												   Kaibin Zhou, 2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 #include "type.h"
@@ -17,21 +18,12 @@
 #include "global.h"
 #include "proto.h"
 #include "tools/user.h"
+#include "tools/fs.h"
 
 
 
 
 
-//文件数据
-char currentFolder[128] = "/";
-char filepath[128] = "";
-char files[20][128];
-char userfiles[20][128];
-int filequeue[50];
-int filecount = 0;
-int isEntered = 0;
-//int UserSwitch = 0;
-int leiflag = 0;
 
 
 /*****************************************************************************

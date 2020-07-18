@@ -9,8 +9,20 @@
 #include "console.h"
 #include "global.h"
 #include "proto.h"
+#include "tools/fs.h"
+#include "tools/user.h"
 
-/* Edit File Cover */
+//文件数据
+char currentFolder[128] = "/";
+char filepath[128] = "";
+char files[20][128];
+char userfiles[20][128];
+int filequeue[50];
+int filecount = 0;
+int isEntered = 0;
+int leiflag = 0;
+
+//覆盖文件
 void editCover(char *filepath, char *buf)
 {
 
@@ -26,7 +38,6 @@ void editCover(char *filepath, char *buf)
         empty[i] = '\0';
 
     fd = open(filepath, O_RDWR);
-    //printf("%d",fd);
     if (fd == -1)
         return;
     write(fd, empty, 1024);
@@ -36,7 +47,7 @@ void editCover(char *filepath, char *buf)
     close(fd);
 }
 
-/* Edit File Appand */
+//追加文件
 void editAppand(char *filepath, char *buf)
 {
     if (vertify() == 0)
