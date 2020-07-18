@@ -286,7 +286,7 @@ void shabby_shell(const char * tty_name)
     char arg2[128];  //参数2
     char buf[1024];
 
-	initData();
+	initUsers();
 	while (1)
 	{
 		login();
@@ -345,13 +345,40 @@ void shabby_shell(const char * tty_name)
 							printf("Usage:useradd [username] [password]\n");
 						}
 					}
+					else if (strcmp(argv[0], "userdel") == 0)
+					{
+						if(argc==2)
+						{
+							delUser(argv[1]);
+						}
+						else
+						{
+							printf("Usage:userdel [username]\n");
+						}
+					}
+					else if(strcmp(argv[0], "passwd") == 0)
+					{
+						if(argc==2)
+						{
+							passwd(argv[1]);
+						}
+						else
+						{
+							printf("Usage:passwd [username]\n");
+						}
+					}
 					else if (strcmp(argv[0], "logout") == 0)
 					{
 						break;
 					}
+					else if (strcmp(argv[0], "sudo") == 0)
+					{
+						sudo();
+					}
 					else
 					{
-						printf("Command '%s' not found\n",argv[0]);
+						if(argc>0)
+							printf("Command '%s' not found\n",argv[0]);
 						continue;
 					}
 				}
