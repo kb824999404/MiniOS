@@ -18,6 +18,30 @@
 #include "proto.h"
 
 
+//用户数据
+#define MAX_USER_COUNT 10
+
+struct Users{
+	char username[128];
+	char password[128];
+}users[MAX_USER_COUNT];
+char currentUser[128] = "/";
+int usercount = 0;
+int currentUserIndex=-1;
+
+
+//文件数据
+char currentFolder[128] = "/";
+char filepath[128] = "";
+char files[20][128];
+char userfiles[20][128];
+int filequeue[50];
+int filecount = 0;
+int isEntered = 0;
+//int UserSwitch = 0;
+int leiflag = 0;
+
+
 /*****************************************************************************
  *                               kernel_main
  *****************************************************************************/
@@ -256,6 +280,7 @@ PUBLIC void clear()
         printf("\n");
 }
 
+
 void shabby_shell(const char * tty_name)
 {
 	int fd_stdin  = open(tty_name, O_RDWR);
@@ -269,87 +294,93 @@ void shabby_shell(const char * tty_name)
     char arg2[128];  //参数2
     char buf[1024];
 
-	while (1) {
-		write(1, "$ ", 2);
-		int r = read(0, rdbuf, 70);
-		rdbuf[r] = 0;
+	initData();
+	while (1)
+	{
+		login();
+		while (1) 	
+		{
+			// write(1, "$ ", 2);
+			printf("%s@MiniOS:%s$ ",currentUser,currentFolder);
+			int r = read(0, rdbuf, 70);
+			rdbuf[r] = 0;
 
-		int argc = 0;
-		char * argv[PROC_ORIGIN_STACK];
-		char * p = rdbuf;
-		char * s;
-		int word = 0;
-		char ch;
-		do {
-			ch = *p;
-			if (*p != ' ' && *p != 0 && !word) {
-				s = p;
-				word = 1;
+			int argc = 0;
+			char * argv[PROC_ORIGIN_STACK];
+			char * p = rdbuf;
+			char * s;
+			int word = 0;
+			char ch;
+			do {
+				ch = *p;
+				if (*p != ' ' && *p != 0 && !word) {
+					s = p;
+					word = 1;
+				}
+				if ((*p == ' ' || *p == 0) && word) {
+					word = 0;
+					argv[argc++] = s;
+					*p = 0;
+				}
+				p++;
+			} while(ch);
+			argv[argc] = 0;
+			int fd = open(argv[0], O_RDWR);
+			if (fd == -1) {
+				if (rdbuf[0]) {
+					// write(1, "{", 1);
+					// write(1, rdbuf, r);
+					// write(1, "}\n", 2);
+
+					//执行命令
+					if (strcmp(argv[0], "clear") == 0)
+					{
+						clear();
+						welcome();
+					} 
+					else if (strcmp(argv[0], "users") == 0)
+					{
+						showUsers();
+					}
+					else if (strcmp(argv[0], "useradd") == 0)
+					{
+						if(argc==3)
+						{
+							addUser(argv[1], argv[2]);
+						}
+						else
+						{
+							printf("Usage:useradd [username] [password]\n");
+						}
+					}
+					else if (strcmp(argv[0], "logout") == 0)
+					{
+						break;
+					}
+					else
+					{
+						printf("Command '%s' not found\n",argv[0]);
+						continue;
+					}
+				}
 			}
-			if ((*p == ' ' || *p == 0) && word) {
-				word = 0;
-				argv[argc++] = s;
-				*p = 0;
-			}
-			p++;
-		} while(ch);
-		argv[argc] = 0;
-
-		int fd = open(argv[0], O_RDWR);
-		if (fd == -1) {
-			if (rdbuf[0]) {
-				// write(1, "{", 1);
-				// write(1, rdbuf, r);
-				// write(1, "}\n", 2);
-
-				int i = 0, j = 0;
-                /* get command */
-                while (rdbuf[i] != ' ' && rdbuf[i] != 0)
-                {
-                    cmd[i] = rdbuf[i];
-                    i++;
-                }
-                i++;
-                /* get arg1 */
-                while (rdbuf[i] != ' ' && rdbuf[i] != 0)
-                {
-                    arg1[j] = rdbuf[i];
-                    i++;
-                    j++;
-                }
-                i++;
-                j = 0;
-                /* get arg2 */
-                while (rdbuf[i] != ' ' && rdbuf[i] != 0)
-                {
-                    arg2[j] = rdbuf[i];
-                    i++;
-                    j++;
-                }
-				//Process the command to format"cmd arg1 arg2"
-				if (strcmp(cmd, "clear") == 0)
-                {
-                    clear();
-                    welcome();
-                } 
-				else
-                {
-                    continue;
-                }
+			else {
+				close(fd);
+				int pid = fork();
+				if (pid != 0) { /* parent */
+					int s;
+					wait(&s);
+				}
+				else {	/* child */
+					execv(argv[0], argv);
+				}
 			}
 		}
-		else {
-			close(fd);
-			int pid = fork();
-			if (pid != 0) { /* parent */
-				int s;
-				wait(&s);
-			}
-			else {	/* child */
-				execv(argv[0], argv);
-			}
-		}
+		clear();
+		welcome();
 	}
+	
+
 
 	close(1);
 	close(0);
@@ -403,7 +434,298 @@ void Init()
 
 	assert(0);
 }
+int vertify()
+{
+    if (currentUserIndex !=-1)
+    {
+        printf("Permission deny!!\n");
+        return 0;
+    }
+    else
+        return 1;
+}
 
+void initData()
+{
+    int fd = -1, n = 0, i = 0, count = 0, k = 0;
+    char bufr[1024] = "";	//用户名数据缓冲区
+    char bufp[1024] = "";	//密码数据缓冲区
+
+	for(i=0;i<MAX_USER_COUNT;i++)
+	{
+		strcpy(users[i].username,"empty");
+	}
+	fd = open("Users", O_RDWR);
+	if(fd==-1)
+	{
+		fd=open("Users",O_CREAT);
+	}
+	close(fd);
+	fd = open("Passwords", O_RDWR);
+	if(fd==-1)
+	{
+		fd=open("Passwords",O_CREAT);
+	}
+	close(fd);
+	//读取用户名
+    fd = open("Users", O_RDWR);
+    n = read(fd, bufr, 1024);
+    bufr[strlen(bufr)] = '\0';
+    for (i = 0; i < strlen(bufr); i++)
+    {
+        if (bufr[i] != ' ')
+        {
+            users[count].username[k] = bufr[i];
+            k++;
+        }
+        else
+        {
+            while (bufr[i] == ' ')
+            {
+                i++;
+                if (bufr[i] == '\0')
+                {
+                    users[count].username[k] = '\0';
+                    if (strcmp(users[count].username, "empty") != 0)
+                        usercount++;
+                    count++;
+                    break;
+                }
+            }
+            if (bufr[i] == '\0')
+            {
+                break;
+            }
+            i--;
+            users[count].username[k] = '\0';
+            if (strcmp(users[count].username, "empty") != 0)
+                usercount++;
+            k = 0;
+            count++;
+        }
+    }
+    close(fd);
+    count = 0;
+    k = 0;
+
+	//读取用户密码
+    fd = open("Passwords", O_RDWR);
+    n = read(fd, bufp, 1024);
+    for (i = 0; i < strlen(bufp); i++)
+    {
+        if (bufp[i] != ' ')
+        {
+			users[count].password[i] = bufp[i];
+            k++;
+        }
+        else
+        {
+            while (bufp[i] == ' ')
+            {
+                i++;
+                if (bufp[i] == '\0')
+                {
+                    count++;
+                    break;
+                }
+            }
+            if (bufp[i] == '\0')
+                break;
+            i--;
+            users[count].password[k] = '\0';
+            k = 0;
+            count++;
+        }
+    }
+    close(fd);
+    count = 0;
+    k = 0;
+
+}
+//登录
+void login()
+{
+	while (1)
+    {
+        if (usercount == 0)
+        {
+            printf("Enter Admin Password:");
+            char buf[128];
+            int r = read(0, buf, 128);
+            buf[r] = 0;
+            if (strcmp(buf, "admin") == 0)
+            {
+                strcpy(currentUser, "Admin");
+                break;
+            }
+            else
+                printf("Password Error!\n");
+        }
+        else
+        {
+            //printf("%d",usercount);
+            int isGet = 0;
+            printf("User Name:");
+            char buf[128];
+            int r = read(0, buf, 128);
+            buf[r] = 0;
+            int i;
+            for (i = 0; i < usercount; i++)
+            {
+                if (strcmp(buf, users[i].username) == 0 && strcmp(buf, "empty") != 0)
+                {
+                    printf("Password:");
+                    char buf[128];
+                    int r = read(0, buf, 128);
+                    buf[r] = 0;
+                    if (strcmp(buf,users[i].password) == 0)
+                    {
+                        strcpy(currentUser, users[i].username);
+                        currentUserIndex=i;
+                        isGet = 1;
+                        break;
+                    }
+                }
+            }
+            if (isGet)
+                break;
+            else
+                printf("Password Error Or User Not Exist!\n");
+        }
+    }
+}
+
+//显示所有用户
+void showUsers()
+{
+	int i;
+	printf("UserCount:%d\n",usercount);
+	for (i = 0; i < usercount; i++)
+	{
+		if (strcmp(users[i].username, "empty") != 0)
+		{
+			printf("%s",users[i].username);
+		}
+	}
+	printf("\n");
+}
+
+//添加用户
+void addUser(char *username, char *password)
+{
+    if (currentUserIndex==-1)
+    {
+        int i;
+		
+        for (i = 0; i < usercount; i++)
+        {
+            if (strcmp(users[i].username, username) == 0)
+            {
+                printf("User exists!\n");
+                return;
+            }
+        }
+        if (usercount >= MAX_USER_COUNT)
+        {
+            printf("No more users\n");
+            return;
+        }
+        if (strcmp(users[usercount].username, "empty") == 0)
+        {
+            strcpy(users[usercount].username, username);
+            strcpy(users[usercount].password, password);
+            usercount++;
+            updateUsers();
+			printf("Add User '%s' Successfully!\n",username);
+            return;
+        }
+    }
+    else
+        printf("Permission Deny!\n");
+}
+
+//将用户数据保存到文件
+void updateUsers()
+{
+    int i = 0, count = 0;
+    editCover("Users", "");
+	editCover("Passwords", "");
+	for(i=0;i<usercount;i++)
+	{
+		if (strcmp(users[i].username, "empty") != 0)
+		{
+			editAppand("Users", users[i].username);
+			editAppand("Users", " ");
+			editAppand("Passwords",users[i].password);
+        	editAppand("Passwords", " ");
+		}
+		else
+		{
+			editAppand("Users", "empty ");
+			editAppand("Passwords", "empty ");
+		}
+	}
+}
+
+/* Edit File Cover */
+void editCover(char *filepath, char *buf)
+{
+
+    if (vertify() == 0)
+        return;
+
+    int fd = -1;
+    int n, i = 0;
+    char bufr[1024] = "";
+    char empty[1024];
+
+    for (i = 0; i < 1024; i++)
+        empty[i] = '\0';
+
+    fd = open(filepath, O_RDWR);
+    //printf("%d",fd);
+    if (fd == -1)
+        return;
+    write(fd, empty, 1024);
+    close(fd);
+    fd = open(filepath, O_RDWR);
+    write(fd, buf, strlen(buf));
+    close(fd);
+}
+
+/* Edit File Appand */
+void editAppand(char *filepath, char *buf)
+{
+    if (vertify() == 0)
+        return;
+
+    int fd = -1;
+    int n, i = 0;
+    char bufr[1024] = "";
+    char empty[1024];
+
+    for (i = 0; i < 1024; i++)
+        empty[i] = '\0';
+    fd = open(filepath, O_RDWR);
+    if (fd == -1)
+    {
+        printf("Fail, please check and try again!!\n");
+        return;
+    }
+
+    n = read(fd, bufr, 1024);
+    n = strlen(bufr);
+
+    for (i = 0; i < strlen(buf); i++, n++)
+    {
+        bufr[n] = buf[i];
+        bufr[n + 1] = '\0';
+    }
+    write(fd, empty, 1024);
+    fd = open(filepath, O_RDWR);
+    write(fd, bufr, strlen(bufr));
+    close(fd);
+}
 
 /*======================================================================*
                                TestA
