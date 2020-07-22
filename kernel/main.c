@@ -19,7 +19,7 @@
 #include "proto.h"
 #include "tools/user.h"
 #include "tools/fs.h"
-
+#include "graphics.h"
 
 
 
@@ -35,8 +35,8 @@
  *****************************************************************************/
 PUBLIC int kernel_main()
 {
-	disp_str("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-
+	// disp_str("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+	init_graphics();
 	int i, j, eflags, prio;
         u8  rpl;
         u8  priv; /* privilege */
@@ -132,7 +132,7 @@ PUBLIC int kernel_main()
 	p_proc_ready	= proc_table;
 
 	init_clock();
-        init_keyboard();
+	init_keyboard();
 
 	restart();
 
@@ -279,6 +279,8 @@ void shabby_shell(const char * tty_name)
     char buf[1024];
 
 	initUsers();
+	drawBMP("MiniOS.bmp");	
+	topBar(" ");
 	while (1)
 	{
 		login();
@@ -415,11 +417,10 @@ void Init()
 
 	/* extract `cmd.tar' */
 	untar("/cmd.tar");
-	welcomeAnimation();
     welcome();
 			
 
-	char * tty_list[] = {"/dev_tty0","/dev_tty1", "/dev_tty2"};
+	char * tty_list[] = {"/dev_tty0"};
 
 	int i;
 	for (i = 0; i < sizeof(tty_list) / sizeof(tty_list[0]); i++) {
@@ -472,6 +473,7 @@ void TestC()
 {
 	for(;;);
 }
+
 
 /*****************************************************************************
  *                                panic

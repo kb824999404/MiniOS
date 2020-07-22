@@ -8,6 +8,17 @@
 #ifndef _ORANGES_CONSOLE_H_
 #define _ORANGES_CONSOLE_H_
 
+
+
+#define SCR_UP	1	/* scroll upward */
+#define SCR_DN	-1	/* scroll downward */
+
+#define SCR_SIZE		(40 * 11)
+#define SCR_WIDTH		 40
+#define TAB_WIDTH		 8
+#define PIX_WIDTH		 320
+#define PIX_HEIGHT		 200
+
 /* CONSOLE */
 typedef struct s_console
 {
@@ -16,15 +27,8 @@ typedef struct s_console
 	unsigned int	con_size;   /* how many words does the console have */
 	unsigned int	cursor;
 	int		is_full;
+	char cbuf[SCR_SIZE];
 }CONSOLE;
-
-
-#define SCR_UP	1	/* scroll upward */
-#define SCR_DN	-1	/* scroll downward */
-
-#define SCR_SIZE		(80 * 25)
-#define SCR_WIDTH		 80
-#define TAB_WIDTH		 8
 
 // #define DEFAULT_CHAR_COLOR	(MAKE_COLOR(BLACK, WHITE))
 #define DEFAULT_CHAR_COLOR  (MAKE_COLOR(BLACK, GREEN|BLUE) | BRIGHT)

@@ -3,9 +3,16 @@
                             proto.h
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                     Forrest Yu, 2005
+													Kaibin Zhou,2020
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /* kliba.asm */
+PUBLIC void io_hlt();
+PUBLIC void io_cli();
+PUBLIC void io_out8(int port, int data);
+PUBLIC int io_load_eflags();
+PUBLIC void io_store_eflags(int eflags);
+
 PUBLIC void	out_byte(u16 port, u8 value);
 PUBLIC u8	in_byte(u16 port);
 PUBLIC void	disp_str(char * info);
@@ -134,6 +141,9 @@ PUBLIC void	inform_int(int task_nr);
 
 /* lib/misc.c */
 PUBLIC void spin(char * func_name);
+
+/* graphics/main.c*/
+PUBLIC void task_graphics();
 
 /* 以下是系统调用相关 */
 

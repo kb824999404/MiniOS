@@ -208,6 +208,7 @@ void login()
             }
         }
     }
+    topBar(currentUser);
 }
 
 //显示所有用户

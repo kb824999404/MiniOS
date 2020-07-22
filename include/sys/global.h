@@ -57,6 +57,9 @@ EXTERN	struct proc *		pcaller;
 EXTERN	struct inode *		root_inode;
 extern	struct dev_drv_map	dd_map[];
 
+/* GRAPHICS */
+EXTERN	MESSAGE			graphics_msg;
+
 /* for test only */
 extern	char *			logbuf;
 extern	const int		LOGBUF_SIZE;

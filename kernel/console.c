@@ -19,6 +19,7 @@
 #include "global.h"
 #include "keyboard.h"
 #include "proto.h"
+#include "graphics.h"
 
 /* #define __TTY_DEBUG__ */
 
@@ -26,7 +27,7 @@
 PRIVATE void	set_cursor(unsigned int position);
 PRIVATE void	set_video_start_addr(u32 addr);
 PRIVATE void	flush(CONSOLE* con);
-PRIVATE	void	w_copy(unsigned int dst, const unsigned int src, int size);
+PRIVATE	void	w_copy(CONSOLE *con,unsigned int dst,unsigned int src);
 PRIVATE void	clear_screen(int pos, int len);
 
 /*****************************************************************************
@@ -40,22 +41,30 @@ PRIVATE void	clear_screen(int pos, int len);
 PUBLIC void init_screen(TTY* tty)
 {
 	int nr_tty = tty - tty_table;
-	tty->console = console_table + nr_tty;
+	// tty->console = console_table + nr_tty;
+	tty->console = console_table;
 
 	/* 
 	 * NOTE:
 	 *   variables related to `position' and `size' below are
 	 *   in WORDs, but not in BYTEs.
 	 */
+	// int v_mem_size = V_MEM_SIZE >> 1; /* size of Video Memory */
+	// int size_per_con = v_mem_size / NR_CONSOLES;
+	// tty->console->orig = nr_tty * size_per_con;
+	// tty->console->con_size = size_per_con / SCR_WIDTH * SCR_WIDTH;
+	// tty->console->cursor = tty->console->crtc_start = tty->console->orig;
+	// tty->console->is_full = 0;
+
 	int v_mem_size = V_MEM_SIZE >> 1; /* size of Video Memory */
 	int size_per_con = v_mem_size / NR_CONSOLES;
-	tty->console->orig = nr_tty * size_per_con;
-	tty->console->con_size = size_per_con / SCR_WIDTH * SCR_WIDTH;
+	tty->console->orig = 0;
+	tty->console->con_size = SCR_SIZE;
 	tty->console->cursor = tty->console->crtc_start = tty->console->orig;
 	tty->console->is_full = 0;
 
 	if (nr_tty == 0) {
-		tty->console->cursor = disp_pos / 2;
+		// tty->console->cursor = disp_pos / 2;
 		disp_pos = 0;
 	}
 	else {
@@ -85,7 +94,7 @@ PUBLIC void init_screen(TTY* tty)
 PUBLIC void out_char(CONSOLE* con, char ch)
 {
 	int i;
-	u8* pch = (u8*)(V_MEM_BASE + con->cursor * 2);
+	// u8* pch = (u8*)(V_MEM_BASE + con->cursor * 2);
 
 	assert(con->cursor - con->orig < con->con_size);
 
@@ -103,20 +112,33 @@ PUBLIC void out_char(CONSOLE* con, char ch)
 	case '\b':
 		if (con->cursor > con->orig) {
 			con->cursor--;
-			*(pch - 2) = ' ';
-			*(pch - 1) = DEFAULT_CHAR_COLOR;
+			cursor_x = (con->cursor - con->orig) % SCR_WIDTH;
+			cursor_y = (con->cursor - con->orig) / SCR_WIDTH;
+			con->cbuf[con->cursor]=ch;
+			putfont(cursor_x,cursor_y,ch);
+			// *(pch - 2) = ' ';
+			// *(pch - 1) = DEFAULT_CHAR_COLOR;
+
 		}
 		break;
 	case '\t':
 		for (i = 0; i < TAB_WIDTH; i++) {
-			*pch++ = ' ';
-			*pch++ = DEFAULT_CHAR_COLOR;
+			// *pch++ = ' ';
+			// *pch++ = DEFAULT_CHAR_COLOR;
+			cursor_x = (con->cursor - con->orig) % SCR_WIDTH;
+			cursor_y = (con->cursor - con->orig) / SCR_WIDTH;
+			con->cbuf[con->cursor]=ch;
+			putfont(cursor_x,cursor_y,ch);
 			con->cursor++;
 		}
 		break;
 	default:
-		*pch++ = ch;
-		*pch++ = DEFAULT_CHAR_COLOR;
+		// *pch++ = ch;
+		// *pch++ = DEFAULT_CHAR_COLOR;
+		cursor_x = (con->cursor - con->orig) % SCR_WIDTH;
+		cursor_y = (con->cursor - con->orig) / SCR_WIDTH;
+		con->cbuf[con->cursor]=ch;
+		putfont(cursor_x,cursor_y,ch);		
 		con->cursor++;
 		break;
 	}
@@ -124,8 +146,9 @@ PUBLIC void out_char(CONSOLE* con, char ch)
 	if (con->cursor - con->orig >= con->con_size) {
 		cursor_x = (con->cursor - con->orig) % SCR_WIDTH;
 		cursor_y = (con->cursor - con->orig) / SCR_WIDTH;
-		int cp_orig = con->orig + (cursor_y + 1) * SCR_WIDTH - SCR_SIZE;
-		w_copy(con->orig, cp_orig, SCR_SIZE - SCR_WIDTH);
+		// int cp_orig = (cursor_y + 1) * SCR_WIDTH - SCR_SIZE;
+		int cp_orig = SCR_WIDTH;
+		w_copy(con,0, cp_orig);
 		con->crtc_start = con->orig;
 		con->cursor = con->orig + (SCR_SIZE - SCR_WIDTH) + cursor_x;
 		clear_screen(con->cursor, SCR_WIDTH);
@@ -145,6 +168,15 @@ PUBLIC void out_char(CONSOLE* con, char ch)
 	flush(con);
 }
 
+
+void putfont(int x,int y,char ch)
+{
+	x=x*FONT_WIDTH;
+	y=y*FONT_HEIGHT+TOPBAR_HEIGHT;
+	boxfill8(SCREEN_WIDTH,DEFAULT_BACKGROUND,x,y,x+FONT_WIDTH,y+FONT_HEIGHT);
+	putfonts8_char( x,y,DEFAULT_FRONT, ch);
+}
+
 /*****************************************************************************
  *                                clear_screen
  *****************************************************************************/
@@ -156,10 +188,16 @@ PUBLIC void out_char(CONSOLE* con, char ch)
  *****************************************************************************/
 PRIVATE void clear_screen(int pos, int len)
 {
-	u8 * pch = (u8*)(V_MEM_BASE + pos * 2);
+	// u8 * pch = (u8*)(V_MEM_BASE + pos * 2);
+	// while (--len >= 0) {
+	// 	*pch++ = ' ';
+	// 	*pch++ = DEFAULT_CHAR_COLOR;
+	// }
 	while (--len >= 0) {
-		*pch++ = ' ';
-		*pch++ = DEFAULT_CHAR_COLOR;
+	int cursor_x = (pos) % SCR_WIDTH;
+	int cursor_y = (pos) / SCR_WIDTH;
+	putfont(cursor_x,cursor_y,' ');
+	pos++;
 	}
 }
 
@@ -230,8 +268,8 @@ PRIVATE void set_video_start_addr(u32 addr)
 PUBLIC void select_console(int nr_console)
 {
 	if ((nr_console < 0) || (nr_console >= NR_CONSOLES)) return;
-
-	flush(&console_table[current_console = nr_console]);
+	current_console = 0;
+	// flush(&console_table[current_console = nr_console]);
 }
 
 
@@ -315,10 +353,10 @@ PUBLIC void scroll_screen(CONSOLE* con, int dir)
  *****************************************************************************/
 PRIVATE void flush(CONSOLE* con)
 {
-	if (is_current_console(con)) {
-		set_cursor(con->cursor);
-		set_video_start_addr(con->crtc_start);
-	}
+	// if (is_current_console(con)) {
+	// 	set_cursor(con->cursor);
+	// 	set_video_start_addr(con->crtc_start);
+	// }
 
 #ifdef __TTY_DEBUG__
 	int lineno = 0;
@@ -347,10 +385,26 @@ PRIVATE void flush(CONSOLE* con)
  * @param src   Addr of source.
  * @param size  How many words will be copied.
  *****************************************************************************/
-PRIVATE	void w_copy(unsigned int dst, const unsigned int src, int size)
+PRIVATE	void w_copy(CONSOLE *con,unsigned int dst,unsigned int src)
 {
-	phys_copy((void*)(V_MEM_BASE + (dst << 1)),
-		  (void*)(V_MEM_BASE + (src << 1)),
-		  size << 1);
+	int k,size=SCR_SIZE-SCR_WIDTH;
+	char *cbuf=con->cbuf;
+	for(k=0;k<size;k++)
+	{
+		cbuf[dst+k]=cbuf[src+k];
+	}
+	for(k=size;k<SCR_SIZE;k++)
+	{
+		cbuf[dst+k]=' ';
+	}
+	for(k=0;k<SCR_SIZE;k++)
+	{
+		int x=k%SCR_WIDTH;
+		int y=k/SCR_WIDTH;
+		putfont(x,y,cbuf[k]);
+	}
+	
+	
 }
+
 

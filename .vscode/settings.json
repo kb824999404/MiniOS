@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.sql": "oraclesql",
+        "fstream": "c",
+        "istream": "c",
+        "ostream": "c",
+        "streambuf": "c",
+        "xiosbase": "c"
+    }
+}

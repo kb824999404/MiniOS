@@ -17,6 +17,7 @@
 #define	INSTALL_START_SECT		0x8000
 #define	INSTALL_NR_SECTS		0x800
 
+#define BMP_START_SECT 0x9000
 /**
  * boot parameters are stored by the loader, they should be
  * there when kernel is running and should not be overwritten
