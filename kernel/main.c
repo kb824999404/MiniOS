@@ -369,6 +369,14 @@ void shabby_shell(const char * tty_name)
 					{
 						sudo();
 					}
+					else if (strcmp(argv[0], "colormode") == 0)
+					{
+						changeColorMode();
+					}
+					else if (strcmp(argv[0], "bmp") == 0)
+					{
+						drawBMP("MiniOS.bmp");
+					}
 					else
 					{
 						if(argc>0)
@@ -388,6 +396,8 @@ void shabby_shell(const char * tty_name)
 					execv(argv[0], argv);
 				}
 			}
+			topBar(currentUser);
+
 		}
 		clear();
 		welcome();

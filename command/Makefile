@@ -12,7 +12,7 @@ CFLAGS		= -I ../include/ -c -fno-builtin -fno-stack-protector -Wall
 LDFLAGS		= -Ttext 0x1000
 DASMFLAGS	= -D
 LIB		= ../lib/orangescrt.a
-BIN		= echo hello
+BIN		= echo hello draw
 BMP 	= MiniOS.bmp
 
 # All Phony Targets
@@ -55,3 +55,8 @@ hello.o: hello.c ../include/type.h ../include/stdio.h
 hello : hello.o start.o $(LIB)
 	$(LD) $(LDFLAGS) -o $@ $?
 
+draw.o: draw.c ../include/type.h ../include/stdio.h ../include/graphics.h
+	$(CC) $(CFLAGS) -o $@ $<
+
+draw : draw.o start.o $(LIB)
+	$(LD) $(LDFLAGS) -o $@ $?

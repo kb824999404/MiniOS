@@ -50,7 +50,7 @@
 #define FONT_WIDTH 8				//字体宽度
 #define FONT_HEIGHT 16				//字体高度
 
-#define TOPBAR_HEIGHT 8+FONT_HEIGHT	//顶部高度
+#define TOPBAR_HEIGHT (8+FONT_HEIGHT) //顶部高度
 #define ROW_NUM 40					//列数
 #define LINE_NUM 12					//行数
 
@@ -58,5 +58,34 @@
 #define VGA_MEM_FONT VGA_MEM_BASE+(TOPBAR_HEIGHT*SCREEN_WIDTH)
 
 #define BMP_HEAD_SIZE 0x432
+
+#include "type.h"
+/* lib/graphics.c*/
+PUBLIC int drawBMP(const char *filename);
+PUBLIC int topBar(const char *user);
+PUBLIC void drawFont(int x, int y, char *s,char c);
+PUBLIC int drawPixel( int x, int y,unsigned char c);
+PUBLIC void drawBox( int x0, int y0, int x1, int y1,unsigned char c);
+PUBLIC void drawLine(int x0, int y0, int x1, int y1,unsigned char c);
+PUBLIC void drawCircle( int x, int y,int radius,unsigned char c);
+
+/* graphics/graphics.c*/
+PUBLIC void clearScreen();
+PUBLIC int readBMP(char* filename);
+PUBLIC void boxfill8(int xsize, unsigned char c, int x0, int y0, int x1, int y1);
+PUBLIC  void updateTopbar(char *user);
+PUBLIC void clearFonts();
+PUBLIC void putfont8(int x, int y, char c, char *font);
+PUBLIC void putfonts8_char(int x, int y, char c, char ch);
+PUBLIC void putfonts8_asc(int x, int y, char c, unsigned char *s);
+PUBLIC int pixel(int x,int y,unsigned char c);
+PUBLIC void grayPalette();
+PUBLIC void colorPalette();
+
+extern unsigned char table_rgb[16 * 3];
+
+extern unsigned char table_gray[16 * 3];
+
+extern int colorMode;
 
 #endif /* _MINIOS_GRAPHICS_H_ */

@@ -51,6 +51,13 @@ struct mess3 {
 	void*	m3p1;
 	void*	m3p2;
 };
+struct mess4 {
+	unsigned char m4c1;
+	int m4i1;
+	int m4i2;
+	int m4i3;
+	int m4i4;
+};
 typedef struct {
 	int source;
 	int type;
@@ -58,6 +65,7 @@ typedef struct {
 		struct mess1 m1;
 		struct mess2 m2;
 		struct mess3 m3;
+		struct mess4 m4;
 	} u;
 } MESSAGE;
 

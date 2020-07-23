@@ -38,14 +38,15 @@ OBJS		= kernel/kernel.o kernel/start.o kernel/main.o\
 			fs/main.o fs/open.o fs/misc.o fs/read_write.o\
 			fs/link.o \
 			fs/disklog.o\
-			graphics/main.o graphics/graphics.o graphics/drawBMP.o graphics/topBar.o
+			graphics/main.o graphics/graphics.o
 LOBJS		=  lib/syscall.o\
 			lib/printf.o lib/vsprintf.o\
 			lib/string.o lib/misc.o\
 			lib/open.o lib/read.o lib/write.o lib/close.o lib/unlink.o\
 			lib/lseek.o\
 			lib/getpid.o lib/stat.o\
-			lib/fork.o lib/exit.o lib/wait.o lib/exec.o
+			lib/fork.o lib/exit.o lib/wait.o lib/exec.o\
+			lib/graphics.o
 DASMOUTPUT	= kernel.bin.asm
 
 # All Phony Targets
@@ -237,8 +238,5 @@ graphics/main.o: graphics/main.c
 graphics/graphics.o: graphics/graphics.c
 	$(CC) $(CFLAGS) -o $@ $<
 
-graphics/drawBMP.o: graphics/drawBMP.c
-	$(CC) $(CFLAGS) -o $@ $<
-
-graphics/topBar.o: graphics/topBar.c
+lib/graphics.o: lib/graphics.c
 	$(CC) $(CFLAGS) -o $@ $<

@@ -8,21 +8,7 @@
 #include "stdio.h"
 #include "font.h"
 #include "string.h"
-
-//初始化图形界面
-void init_graphics(void)
-{
-	char s[40];
-	int i;
-
-	init_palette();/* 设定调色板 */
-	clearScreen();
-}
-
-
-void init_palette(void)
-{
-	static unsigned char table_rgb[16 * 3] = {
+unsigned char table_rgb[16 * 3] = {
 		0x00, 0x00, 0x00,	/*  0:黑 */
 		0xff, 0x00, 0x00,	/*  1:梁红 */
 		0x00, 0xff, 0x00,	/*  2:亮绿 */
@@ -39,19 +25,61 @@ void init_palette(void)
 		0x84, 0x00, 0x84,	/* 13:暗紫 */
 		0x87, 0xCE, 0xFA,   /* 14:浅暗蓝 */
 		0x84, 0x84, 0x84	/* 15:暗灰 */
-	};
+};
+unsigned char table_gray[16 * 3] = {
+		0x00,0x00,0x00,
+        0x11,0x11,0x11,
+        0x22,0x22,0x22,
+        0x33,0x33,0x33,
+        0x44,0x44,0x44,
+        0x55,0x55,0x55,
+        0x66,0x66,0x66,
+        0x77,0x77,0x77,
+        0x88,0x88,0x88,
+        0x99,0x99,0x99,
+        0xaa,0xaa,0xaa,
+        0xbb,0xbb,0xbb,
+        0xcc,0xcc,0xcc,
+        0xdd,0xdd,0xdd,
+        0xee,0xee,0xee,
+        0xff,0xff,0xee,
+};
+int colorMode=1;
+//初始化图形界面
+void init_graphics(void)
+{
+	char s[40];
+	int i;
+
+	init_palette();/* 设定调色板 */
+	clearScreen();
+}
+
+
+void init_palette(void)
+{
 	set_palette(0, 15, table_rgb);
 	return;
 
 	/* C语言中的static char语句只能用于数据，相当于汇编中的DB指令 */
 }
+PUBLIC void grayPalette()
+{
+	set_palette(0, 15, table_gray);
+	return;
+}
+PUBLIC void colorPalette()
+{
+	set_palette(0, 15, table_rgb);
+	return;	
+}
 
-void clearScreen()
+PUBLIC void clearScreen()
 {
 	boxfill8(SCREEN_WIDTH,DEFAULT_BACKGROUND,0,0,SCREEN_WIDTH,SCREEN_HEIGHT);	
 }
 
-int readBMP(char* filename)
+PUBLIC int readBMP(char* filename)
 {
     char buff[512];
     char *p=VGA_MEM_BASE;
@@ -103,7 +131,7 @@ void set_palette(int start, int end, unsigned char *rgb)
 	return;
 }
 
-void boxfill8(int xsize, unsigned char c, int x0, int y0, int x1, int y1)
+PUBLIC void boxfill8(int xsize, unsigned char c, int x0, int y0, int x1, int y1)
 {
 	int x, y,pos;
 	char *p=VGA_MEM_BASE;
@@ -119,7 +147,7 @@ void boxfill8(int xsize, unsigned char c, int x0, int y0, int x1, int y1)
 }
 
 //重画顶部栏
-void updateTopbar(char *user)
+PUBLIC  void updateTopbar(char *user)
 {
 	char s[40];
 	sprintf(s,"Hello!%s ",user);
@@ -129,13 +157,13 @@ void updateTopbar(char *user)
 }
 
 //情况文字部分
-void clearFonts()
+PUBLIC void clearFonts()
 {
 	boxfill8(SCREEN_WIDTH,DEFAULT_BACKGROUND,0,TOPBAR_HEIGHT,SCREEN_WIDTH,SCREEN_HEIGHT);
 
 }
 
-void putfont8(int x, int y, char c, char *font)
+PUBLIC void putfont8(int x, int y, char c, char *font)
 {
 	int i;
 	char *p, d /* data */;
@@ -153,16 +181,31 @@ void putfont8(int x, int y, char c, char *font)
 	}
 	return;
 }
-void putfonts8_char(int x, int y, char c, char ch)
+PUBLIC void putfonts8_char(int x, int y, char c, char ch)
 {
 	putfont8(x, y, c, hankaku + ch * 16);
 }
 
-void putfonts8_asc(int x, int y, char c, unsigned char *s)
+PUBLIC void putfonts8_asc(int x, int y, char c, unsigned char *s)
 {
 	for (; *s != 0x00; s++) {
 		putfont8(x, y, c, hankaku + *s * 16);
 		x += FONT_WIDTH;
 	}
 	return;
+}
+
+PUBLIC int pixel(int x,int y,unsigned char c)
+{
+	char *p=VGA_MEM_BASE;
+	if(x<0||y<0)
+		return 0;
+	int pos=y*SCREEN_WIDTH+x;
+	if(pos<SCREEN_SIZE)
+	{	
+		p[pos]=c;
+		return 1;
+	}
+	else
+		return 0;
 }

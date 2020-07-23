@@ -183,7 +183,8 @@ enum msgtype {
 	FORK, EXIT,
 
 	/* GRAPHICS*/
-	DRAW,TOPBAR,CLEAR,
+	DRAW,TOPBAR,CLEAR,MODE,
+	PIXEL,FONT,BOX,CIRCLE,LINE,
 
 	/* TTY, SYS, FS, MM, etc */
 	SYSCALL_RET,
@@ -197,6 +198,11 @@ enum msgtype {
 };
 
 /* macros for messages */
+#define M1I1 u.m1.m1i1
+#define M1I2 u.m1.m1i2
+#define M1I3 u.m1.m1i3
+#define M1I4 u.m1.m1i4
+
 #define	FD		u.m3.m3i1
 #define	PATHNAME	u.m3.m3p1
 #define	FLAGS		u.m3.m3i1
@@ -215,8 +221,18 @@ enum msgtype {
 #define	RETVAL		u.m3.m3i1
 #define	STATUS		u.m3.m3i1
 
+#define OFFSETX u.m3.m3i1
+#define OFFSETY u.m3.m3i2
+#define COLOR3 u.m3.m3i3
+#define STRLEN u.m3.m3i4
+#define STRING u.m3.m3p1
 
 
+#define COLOR4 u.m4.m4c1
+#define X1 u.m4.m4i1
+#define Y1 u.m4.m4i2
+#define X2 u.m4.m4i3
+#define Y2 u.m4.m4i4
 
 
 
