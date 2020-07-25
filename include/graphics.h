@@ -61,6 +61,7 @@
 
 #include "type.h"
 /* lib/graphics.c*/
+PUBLIC void clearAll();
 PUBLIC int drawBMP(const char *filename);
 PUBLIC int topBar(const char *user);
 PUBLIC void drawFont(int x, int y, char *s,char c);

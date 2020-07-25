@@ -286,8 +286,7 @@ void shabby_shell(const char * tty_name)
 		login();
 		while (1) 	
 		{
-			// write(1, "$ ", 2);
-			printf("%s@MiniOS:%s$ ",currentUser,currentFolder);
+			printf("[%s@MiniOS]:%s$ ",currentUser,currentFolder);
 			int r = read(0, rdbuf, 70);
 			rdbuf[r] = 0;
 
@@ -401,6 +400,8 @@ void shabby_shell(const char * tty_name)
 		}
 		clear();
 		welcome();
+		drawBMP("MiniOS.bmp");	
+		topBar(" ");
 	}
 	
 

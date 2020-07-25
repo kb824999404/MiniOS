@@ -79,9 +79,6 @@ void smille()
     /*眼白*/
     drawCircle(cx-10,cy-10,radius,COLOR_WHITE);
     drawCircle(cx+10,cy-10,radius,COLOR_WHITE);
-    /*眼黑*/
-    drawBox(cx-10-4-1,cy-10-1,cx-10-4+1,cy-10+1,COLOR_BLACK);
-    drawBox(cx+10-4-1,cy-10-1,cx+10-4+1,cy-10+1,COLOR_BLACK);
     /*嘴*/
     drawPixel(cx,cy+15,COLOR_BLACK);
     int i,len=4;
@@ -95,5 +92,37 @@ void smille()
         drawPixel(cx-(len+i),cy+15-i,COLOR_BLACK);
         drawPixel(cx+(len+i),cy+15-i,COLOR_BLACK);
     }
+    /*眼黑*/
+    drawBox(cx-10-4-1,cy-10-1,cx-10-4+1,cy-10,COLOR_BLACK);
+    drawBox(cx+10-4-1,cy-10-1,cx+10-4+1,cy-10,COLOR_BLACK);
+    for(i=1;i<=8;i++)
+    {
+        delay(10);
+        drawBox(cx-10-4-1+i-1,cy-10-1,cx-10-4+1+i-1,cy-10+1,COLOR_WHITE);
+        drawBox(cx+10-4-1+i-1,cy-10-1,cx+10-4+1+i-1,cy-10+1,COLOR_WHITE);
+
+        drawBox(cx-10-4-1+i,cy-10-1,cx-10-4+1+i,cy-10+1,COLOR_BLACK);
+        drawBox(cx+10-4-1+i,cy-10-1,cx+10-4+1+i,cy-10+1,COLOR_BLACK);
+    }
+    for(i=8;i>=1;i--)
+    {
+        delay(10);
+        drawBox(cx-10-4-1+i,cy-10-1,cx-10-4+1+i,cy-10+1,COLOR_WHITE);
+        drawBox(cx+10-4-1+i,cy-10-1,cx+10-4+1+i,cy-10+1,COLOR_WHITE);
+
+        drawBox(cx-10-4-1+i-1,cy-10-1,cx-10-4+1+i-1,cy-10+1,COLOR_BLACK);
+        drawBox(cx+10-4-1+i-1,cy-10-1,cx+10-4+1+i-1,cy-10+1,COLOR_BLACK);
+    }
+
 }
-         
+      
+void delay(int time)
+{
+	int i, j, k;
+	for(k=0;k<time;k++){
+		/*for(i=0;i<10000;i++){	for Virtual PC	*/
+		for(i=0;i<10;i++){/*	for Bochs	*/
+			for(j=0;j<10000;j++){}
+		}
+	}
+}
