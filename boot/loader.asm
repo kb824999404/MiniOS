@@ -339,7 +339,6 @@ vga:
   	push              fs   
   	;;设置显卡模式
 	mov 	al,0x13					;320x200x256
-	; mov 	al,0x6a					;800x600x4bit
 	mov 	ah,0x00									
   	int               0x10
 	
