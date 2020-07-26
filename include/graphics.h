@@ -69,6 +69,7 @@ PUBLIC int drawPixel( int x, int y,unsigned char c);
 PUBLIC void drawBox( int x0, int y0, int x1, int y1,unsigned char c);
 PUBLIC void drawLine(int x0, int y0, int x1, int y1,unsigned char c);
 PUBLIC void drawCircle( int x, int y,int radius,unsigned char c);
+PUBLIC void clear();
 
 /* graphics/graphics.c*/
 PUBLIC void clearScreen();

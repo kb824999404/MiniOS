@@ -111,6 +111,9 @@ PUBLIC int kernel_main()
 		p->regs.eflags	= eflags;
 
 		p->ticks = p->priority = prio;
+        p->pid = i;               /* pid */
+        p->run_count = 0;
+        p->run_state = 1;
 
 		p->p_flags = 0;
 		p->p_msg = 0;
@@ -249,21 +252,6 @@ void untar(const char * filename)
 	printf(" done, %d files extracted]\n", i);
 }
 
-/*****************************************************************************
- *                                shabby_shell
- *****************************************************************************/
-/**
- * A very very simple shell.
- * 
- * @param tty_name  TTY file name.
- *****************************************************************************/
-PUBLIC void clear()
-{
-    int i = 0;
-    for (i = 0; i < 30; i++)
-        printf("\n");
-}
-
 
 void shabby_shell(const char * tty_name)
 {
@@ -286,7 +274,7 @@ void shabby_shell(const char * tty_name)
 		login();
 		while (1) 	
 		{
-			printf("[%s@MiniOS]:%s$ ",currentUser,currentFolder);
+			printf("%s@MiniOS:%s$ ",currentUser,currentFolder);
 			int r = read(0, rdbuf, 70);
 			rdbuf[r] = 0;
 
@@ -375,6 +363,56 @@ void shabby_shell(const char * tty_name)
 					else if (strcmp(argv[0], "bmp") == 0)
 					{
 						drawBMP("MiniOS.bmp");
+					}
+					else if (strcmp(argv[0], "2048") == 0)
+					{
+						run2048();
+					}
+					else if (strcmp(argv[0], "tanchishe") == 0)
+					{
+						runtanchishe();
+					}
+					else if (strcmp(argv[0], "calendar") == 0)
+					{
+						runcalendar();
+					}
+					else if (strcmp(argv[0], "proc") == 0)
+					{
+						showProcess();
+					}
+					else if (strcmp(argv[0], "kill") == 0)
+					{
+						if(argc==2)
+						{
+							killpro(argv[1]);
+						}
+						else
+						{
+							printf("Usage:kill [pid]\n");
+						}
+						
+					}
+					else if (strcmp(argv[0], "pause") == 0)
+					{
+						if(argc==2)
+						{
+							pausepro(argv[1]);
+						}
+						else
+						{
+							printf("Usage:pause [pid]\n");
+						}
+					}
+					else if (strcmp(argv[0], "resume") == 0)
+					{
+						if(argc==2)
+						{
+							resume(argv[1]);
+						}
+						else
+						{
+							printf("Usage:resume [pid]\n");
+						}
 					}
 					else
 					{

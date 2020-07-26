@@ -60,6 +60,10 @@ PRIVATE void	tty_dev_write	(TTY* tty);
 PRIVATE void	tty_do_read	(TTY* tty, MESSAGE* msg);
 PRIVATE void	tty_do_write	(TTY* tty, MESSAGE* msg);
 PRIVATE void	put_key		(TTY* tty, u32 key);
+PRIVATE void 	empty(TTY* tty);
+PRIVATE void 	putstring(TTY *tty, const char* str);
+PRIVATE void 	remember(TTY *tty);
+PRIVATE void 	match(TTY* tty);
 
 
 /*****************************************************************************
@@ -160,26 +164,63 @@ PUBLIC void in_process(TTY* tty, u32 key)
 {
 	if (!(key & FLAG_EXT)) {
 		put_key(tty, key);
+		tty->inputing[tty->index++]=key;
 	}
 	else {
 		int raw_code = key & MASK_RAW;
 		switch(raw_code) {
+		case TAB:
+			match(tty);
+			break;
 		case ENTER:
 			put_key(tty, '\n');
+			remember(tty);
 			break;
 		case BACKSPACE:
 			put_key(tty, '\b');
+			if(tty->index > 0)
+   			{
+			    tty->index--;
+				tty->inputing[tty->index] = 0;
+			}
 			break;
 		case UP:
 			if ((key & FLAG_SHIFT_L) ||
 			    (key & FLAG_SHIFT_R)) {	/* Shift + Up */
 				scroll_screen(tty->console, SCR_DN);
 			}
+			else		/*UP*/
+			{
+				if(tty->show > 0&&strlen(tty->historyinputs[tty->show-1])>0)	/*显示历史命令*/
+				{
+					tty->show--;
+					putstring(tty,tty->historyinputs[tty->show]);
+				}
+				else if(tty->show == 0 && strlen(tty->historyinputs[15]) > 0) //循环
+			    {
+					tty->show = 15;
+					putstring(tty,tty->historyinputs[tty->show]);
+				}
+			}
+			
 			break;
 		case DOWN:
 			if ((key & FLAG_SHIFT_L) ||
 			    (key & FLAG_SHIFT_R)) {	/* Shift + Down */
 				scroll_screen(tty->console, SCR_UP);
+			}
+			else		/*DOWN*/
+			{
+				if(tty->show < tty->latestinput&&strlen(tty->historyinputs[tty->show+1])>0)
+				{
+					tty->show++;
+					putstring(tty,tty->historyinputs[tty->show]);
+				}
+				else if(tty->show == 15 && tty->show > tty->latestinput)
+				{
+					tty->show = 0;
+					putstring(tty,tty->historyinputs[tty->show]);
+				}
 			}
 			break;
 		case F1:
@@ -225,6 +266,83 @@ PRIVATE void put_key(TTY* tty, u32 key)
 		if (tty->ibuf_head == tty->ibuf + TTY_IN_BYTES)
 			tty->ibuf_head = tty->ibuf;
 		tty->ibuf_cnt++;
+	}
+}
+
+
+/*清空当前输入命令*/
+PRIVATE void empty(TTY* tty)
+{
+    int i = tty->index;
+    while(i > 0)
+    {
+		i--;
+		put_key(tty,'\b');
+    }
+}
+
+/*替换当前输入命令*/
+PRIVATE void putstring(TTY *tty, const char* str)
+{
+	int i;
+    empty(tty);
+    tty->index = strlen(str);
+    for(i=0;i<strlen(str);i++)
+    {
+        put_key(tty,str[i]);
+        tty->inputing[i] = str[i];
+    }
+}
+
+/*将输入的命令计入历史命令中*/
+PRIVATE void remember(TTY *tty)
+{
+    strcpy(tty->historyinputs[tty->latestinput],tty->inputing);   //将输入的命令计入历史命令中
+
+    tty->latestinput++;                          
+    if(tty->latestinput == 16)
+    {
+        tty->latestinput = 0;                     //只能存储16条命令
+    }
+    tty->show = tty->latestinput;           
+    while(tty->index > 0)                   //清空当前输入命令
+    {
+		tty->inputing[tty->index--] = 0;
+    }
+    tty->inputing[tty->index] = 0;      
+}
+
+
+
+
+/*匹配命令*/
+PRIVATE void match(TTY* tty)
+{
+    int index;
+	char *operations[]={
+		"ps","pause","resume","pstree"
+	};
+	int length=sizeof(operations)/sizeof(operations[0]);
+	if(tty->inputing[0]!=' ')
+	{
+		for(index=0;index<length;index++)		//查找所有命令
+		{
+			int i,find=1;
+			for(i=0;i<tty->index;i++)
+			{
+				if(tty->inputing[i]!=operations[index][i])	//不匹配该命令
+				{
+					find=0;
+					break;
+				}
+			}
+			if(find)							//找到匹配的命令
+			{
+				putstring(tty,operations[index]);
+				return;
+			}
+
+		}
 	}
 }
 

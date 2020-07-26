@@ -6,6 +6,8 @@
         "ostream": "c",
         "streambuf": "c",
         "xiosbase": "c",
-        "xlocale": "c"
+        "xlocale": "c",
+        "string": "c",
+        "xstring": "c"
     }
 }

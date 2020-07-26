@@ -19,7 +19,8 @@
 #include "global.h"
 #include "proto.h"
 
-
+#define MAXN (1 << 20)
+u32 randSeed=824;  //随机数种子
 /*****************************************************************************
  *                                clock_handler
  *****************************************************************************/
@@ -35,7 +36,23 @@ PUBLIC void clock_handler(int irq)
 		ticks = 0;
 
 	if (p_proc_ready->ticks)
+	{
 		p_proc_ready->ticks--;
+		//**************************************************************
+
+		//every time runs, count add one
+		p_proc_ready->run_count++;
+	}
+	//if has run for 20 time,lowing the priority
+
+	if (p_proc_ready->run_count >= p_proc_ready->priority / 2) {
+		p_proc_ready->ticks = 0;
+		p_proc_ready->priority = p_proc_ready->priority / 2;
+		if (p_proc_ready->priority == 0) {
+			p_proc_ready->priority = 1;
+		}
+		p_proc_ready->run_count = 0;
+	}
 
 	if (key_pressed)
 		inform_int(TASK_TTY);
@@ -85,4 +102,27 @@ PUBLIC void init_clock()
         enable_irq(CLOCK_IRQ);                        /* 让8259A可以接收时钟中断 */
 }
 
-
+/*****************************************************************************
+ *                                init_clock
+ *****************************************************************************/
+/**
+ * 当前OS运行时间，单位毫秒
+ * 
+ *****************************************************************************/
+PUBLIC u64 time()
+{
+	int t = get_ticks();
+	return t*1000/HZ;
+}
+PUBLIC void srand(u32 seed)
+{
+	randSeed=seed;
+}
+PUBLIC u32 rand()
+{
+	u32 m = MAXN;
+	int a = 9;
+	int b = 7;
+	randSeed = ( a *randSeed + b ) % m;
+	return randSeed;
+}

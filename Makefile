@@ -32,13 +32,14 @@ OBJS		= kernel/kernel.o kernel/start.o kernel/main.o\
 			kernel/i8259.o kernel/global.o kernel/protect.o kernel/proc.o\
 			kernel/systask.o kernel/hd.o\
 			kernel/kliba.o kernel/klib.o\
-			kernel/tools/welcome.o kernel/tools/fs.o kernel/tools/user.o\
+			kernel/tools/welcome.o kernel/tools/fs.o kernel/tools/user.o kernel/tools/process.o\
 			lib/syslog.o\
 			mm/main.o mm/forkexit.o mm/exec.o\
 			fs/main.o fs/open.o fs/misc.o fs/read_write.o\
 			fs/link.o \
 			fs/disklog.o\
-			graphics/main.o graphics/graphics.o
+			graphics/main.o graphics/graphics.o\
+			kernel/game/2048.o kernel/tools/calendar.o kernel/game/tanchishe.o
 LOBJS		=  lib/syscall.o\
 			lib/printf.o lib/vsprintf.o\
 			lib/string.o lib/misc.o\
@@ -145,6 +146,9 @@ kernel/tools/fs.o: kernel/tools/fs.c
 kernel/tools/user.o: kernel/tools/user.c
 	$(CC) $(CFLAGS) -o $@ $<
 
+kernel/tools/process.o: kernel/tools/process.c
+	$(CC) $(CFLAGS) -o $@ $<
+
 lib/printf.o: lib/printf.c
 	$(CC) $(CFLAGS) -o $@ $<
 
@@ -239,4 +243,13 @@ graphics/graphics.o: graphics/graphics.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 lib/graphics.o: lib/graphics.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/game/2048.o: kernel/game/2048.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/game/tanchishe.o: kernel/game/tanchishe.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/tools/calendar.o: kernel/tools/calendar.c
 	$(CC) $(CFLAGS) -o $@ $<

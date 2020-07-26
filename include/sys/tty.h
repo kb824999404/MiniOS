@@ -29,6 +29,12 @@ typedef struct s_tty
 	int	tty_left_cnt;
 	int	tty_trans_cnt;
 
+	char historyinputs[16][128];	/*输入命令历史*/
+	char inputing[128];				/*当前输入命令*/
+	int latestinput;				/*上一条命令*/
+	int index;						/*当前输入第几个字符*/
+	int show;						/*显示第几条命令*/
+
 	struct s_console *	console;
 }TTY;
 

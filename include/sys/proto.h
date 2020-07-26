@@ -40,6 +40,8 @@ PUBLIC int	get_kernel_map(unsigned int * b, unsigned int * l);
 PUBLIC void	delay(int time);
 PUBLIC void	disp_int(int input);
 PUBLIC char *	itoa(char * str, int num);
+PUBLIC int atoi(char *s);
+PUBLIC int readint();
 
 /* kernel.asm */
 PUBLIC void restart();
@@ -61,6 +63,9 @@ PUBLIC void spurious_irq(int irq);
 PUBLIC void clock_handler(int irq);
 PUBLIC void init_clock();
 PUBLIC void milli_delay(int milli_sec);
+PUBLIC u64 time();
+PUBLIC u32 rand();
+PUBLIC void srand(u32 seed);
 
 /* kernel/hd.c */
 PUBLIC void task_hd();

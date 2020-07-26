@@ -144,3 +144,10 @@ PUBLIC void drawCircle( int x, int y,int radius,unsigned char c)
 	send_recv(BOTH, TASK_GRAPHICS, &msg);
 
 }
+
+PUBLIC void clear()
+{
+    int i = 0;
+    for (i = 0; i < 20; i++)
+        printf("\n");
+}
