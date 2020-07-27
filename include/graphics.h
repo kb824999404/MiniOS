@@ -49,6 +49,7 @@
 #define SCREEN_SIZE SCREEN_WIDTH*SCREEN_HEIGHT
 #define FONT_WIDTH 8				//字体宽度
 #define FONT_HEIGHT 16				//字体高度
+#define PANELSIZE (SCREEN_HEIGHT-TOPBAR_HEIGHT-FONT_HEIGHT)
 
 #define TOPBAR_HEIGHT (8+FONT_HEIGHT) //顶部高度
 #define ROW_NUM 40					//列数

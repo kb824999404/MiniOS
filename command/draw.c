@@ -10,7 +10,6 @@
 #include "string.h"
 #include "graphics.h"
 
-#define PANELSIZE (SCREEN_HEIGHT-TOPBAR_HEIGHT-FONT_HEIGHT)
 int centerX=SCREEN_WIDTH/2,centerY=PANELSIZE/2+TOPBAR_HEIGHT;
 int sizeX=SCREEN_WIDTH/2-FONT_WIDTH/2;
 int sizeY=PANELSIZE/2-FONT_HEIGHT/2;

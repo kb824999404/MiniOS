@@ -28,6 +28,7 @@ typedef struct s_tty
 	void*	tty_req_buf;
 	int	tty_left_cnt;
 	int	tty_trans_cnt;
+	bool key_display;
 
 	char historyinputs[16][128];	/*输入命令历史*/
 	char inputing[128];				/*当前输入命令*/

@@ -20,7 +20,7 @@
 #include "tools/user.h"
 #include "tools/fs.h"
 #include "graphics.h"
-
+#include "keyboard.h"
 
 
 

@@ -73,7 +73,7 @@ PUBLIC void hd_handler(int irq);
 
 /* keyboard.c */
 PUBLIC void init_keyboard();
-PUBLIC void keyboard_read(TTY* p_tty);
+PUBLIC u32 keyboard_read(TTY* p_tty);
 
 /* tty.c */
 PUBLIC void task_tty();

@@ -174,7 +174,7 @@ enum msgtype {
 	OPEN, CLOSE, READ, WRITE, LSEEK, STAT, UNLINK,
 
 	/* FS & TTY */
-	SUSPEND_PROC, RESUME_PROC,
+	SUSPEND_PROC, RESUME_PROC,KBHIT,
 
 	/* MM */
 	EXEC, WAIT,
@@ -234,9 +234,7 @@ enum msgtype {
 #define X2 u.m4.m4i3
 #define Y2 u.m4.m4i4
 
-
-
-
+#define M2P1 u.m2.m2p1
 
 
 #define	DIOCTL_GET_GEO	1

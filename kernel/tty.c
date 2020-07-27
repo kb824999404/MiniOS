@@ -49,7 +49,6 @@
 #include "keyboard.h"
 #include "proto.h"
 
-
 #define TTY_FIRST	(tty_table)
 #define TTY_END		(tty_table + NR_CONSOLES)
 
@@ -85,12 +84,7 @@ PUBLIC void task_tty()
 	select_console(0);
 
 	while (1) {
-		for (tty = TTY_FIRST; tty < TTY_END; tty++) {
-			do {
-				tty_dev_read(tty);
-				tty_dev_write(tty);
-			} while (tty->ibuf_cnt);
-		}
+
 
 		send_recv(RECEIVE, ANY, &msg);
 
@@ -98,6 +92,28 @@ PUBLIC void task_tty()
 		assert(src != TASK_TTY);
 
 		TTY* ptty = &tty_table[msg.DEVICE];
+
+		if(msg.type==KBHIT)
+		{
+			int i,k=msg.M1I1;
+			TTY* t=TTY_FIRST;
+			for(i=0;i<k;i++,t++);
+			t->key_display=false;
+			u32 key=keyboard_read(t);
+			while (key==0)
+				key=keyboard_read(t);
+			msg.RETVAL=key;
+			msg.type = SYSCALL_RET;
+			send_recv(SEND, src, &msg);
+			continue;
+		}
+
+		for (tty = TTY_FIRST; tty < TTY_END; tty++) {
+			do {
+				tty_dev_read(tty);
+				tty_dev_write(tty);
+			} while (tty->ibuf_cnt);
+		}
 
 		switch (msg.type) {
 		case DEV_OPEN:
@@ -146,6 +162,7 @@ PRIVATE void init_tty(TTY* tty)
 	tty->tty_req_buf = 0;
 	tty->tty_left_cnt = 0;
 	tty->tty_trans_cnt = 0;
+	tty->key_display=true;
 
 	init_screen(tty);
 }

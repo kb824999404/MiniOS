@@ -47,7 +47,7 @@ LOBJS		=  lib/syscall.o\
 			lib/lseek.o\
 			lib/getpid.o lib/stat.o\
 			lib/fork.o lib/exit.o lib/wait.o lib/exec.o\
-			lib/graphics.o
+			lib/graphics.o lib/kbhit.o
 DASMOUTPUT	= kernel.bin.asm
 
 # All Phony Targets
@@ -80,7 +80,7 @@ buildimg :
 	sudo cp -fv boot/loader.bin /mnt/floppy/
 	sudo cp -fv kernel.bin /mnt/floppy
 	sudo umount /mnt/floppy
-	# cd command&&make install
+	cd command&&make install
 
 boot/boot.bin : boot/boot.asm boot/include/load.inc boot/include/fat12hdr.inc
 	$(ASM) $(ASMBFLAGS) -o $@ $<
@@ -210,6 +210,9 @@ lib/stat.o: lib/stat.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 lib/lseek.o: lib/lseek.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+lib/kbhit.o: lib/kbhit.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 mm/main.o: mm/main.c

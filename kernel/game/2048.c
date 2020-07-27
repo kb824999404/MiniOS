@@ -10,11 +10,11 @@
 #include "global.h"
 #include "proto.h"
 #include "graphics.h"
-
+#include "keyboard.h"
 
 
 void init_game();
-void loop_game(int fd_stdin);
+void loop_game();
 void reset_game();
 void release_game();
 
@@ -33,31 +33,29 @@ static int best_score;
 static int if_need_add_num;
 static int if_game_over;
 static int if_prepare_exit;
+static const int centerX=SCREEN_WIDTH/2;
+static const int centerY=PANELSIZE/2+TOPBAR_HEIGHT;
+static int gridSizeX=2*FONT_HEIGHT-2;
+static int gridSizeY=2*FONT_HEIGHT-2;
 
 void run2048()
 {
 	init_game();
-	
+	loop_game();
 }
 
-void loop_game(int fd_stdin) {
+void loop_game() {
 	while (1) {
-		char buf[128];
-		int r = 0;
-		r = read(fd_stdin, buf, 70);
-		if (r > 1) {
-			refresh_screen();
-			continue;
-		}
-		buf[r] = 0;
-		char temp = buf[0];
+		u32 key=kbhit();
+		refresh_screen();
+
 
 		if (if_prepare_exit) {
-			if (temp == 'y' || temp == 'Y') {
-				clear();
+			if (key == 'y' || key == 'Y') {
+				clearAll();
 				return;
 			}
-			else if (temp == 'n' || temp == 'N') {
+			else if (key == 'n' || key == 'N') {
 				if_prepare_exit = 0;
 				refresh_screen();
 				continue;
@@ -68,12 +66,12 @@ void loop_game(int fd_stdin) {
 		}
 
 		if (if_game_over) {
-			if (temp == 'y' || temp == 'Y') {
+			if (key == 'y' || key == 'Y') {
 				reset_game();
 				continue;
 			}
-			else if (temp == 'n' || temp == 'N') {
-				clear();
+			else if (key == 'n' || key == 'N') {
+				clearAll();
 				return;
 			}
 			else {
@@ -82,7 +80,7 @@ void loop_game(int fd_stdin) {
 		}
 
 		if_need_add_num = 0;
-		switch (temp)
+		switch (key)
 		{
 		case 'w':
 			move_up();
@@ -99,7 +97,7 @@ void loop_game(int fd_stdin) {
 		case 'q':
 			if_prepare_exit = 1;
 			break;
-		;default:
+		default:
 			refresh_screen();
 			break;
 		}
@@ -299,28 +297,31 @@ void move_down() {
 }
 
 void refresh_screen() {
-	clear();
-
-	printf("\n\n");
-	printf("GAME: 2048     SCORE: %05d    \n", score);
-	printf("--------------------------------------------------");
-	printf("\n\n|----|----|----|----|\n");
+	clearAll();
+	char s[40];
+	sprintf(s,"GAME: 2048   SCORE: %05d",score);
+	drawFont(FONT_WIDTH,FONT_HEIGHT/2,s,COLOR_WHITE);
+	drawBox(centerX-2*gridSizeX,centerY-2*gridSizeY,centerX+2*gridSizeX,centerY+2*gridSizeY,COLOR_WHITE);
 	int i, j;
+	for(i=0;i<=4;i++)
+	{
+		drawLine(centerX-2*gridSizeX+i*gridSizeX,centerY-2*gridSizeY,centerX-2*gridSizeX+i*gridSizeX,centerY+2*gridSizeY,COLOR_BLACK);
+		drawLine(centerX-2*gridSizeX,centerY-2*gridSizeY+i*gridSizeY,centerX+2*gridSizeX,centerY-2*gridSizeY+i*gridSizeY,COLOR_BLACK);
+	}
 	for (i = 0; i < 4; i++) {
-		printf("                             |");
 		for (j = 0; j < 4; j++) {
 			if (board[i][j] != 0) {
 				if (board[i][j] < 10) {
-					printf("  %d |", board[i][j]);
+					sprintf(s,"%d",board[i][j]);
 				}
 				else if (board[i][j] < 100) {
-					printf(" %d |", board[i][j]);
+					sprintf(s,"%d",board[i][j]);
 				}
 				else if (board[i][j] < 1000) {
-					printf(" %d|", board[i][j]);
+					sprintf(s,"%d",board[i][j]);
 				}
 				else if (board[i][j] < 10000) {
-					printf("%4d|", board[i][j]);
+					sprintf(s,"%d",board[i][j]);
 				}
 				else {
 					int n = board[i][j];
@@ -328,34 +329,34 @@ void refresh_screen() {
 					for (k = 1; k < 20; k++) {
 						n = n >> 1;
 						if (n == 1) {
-							printf("2^%02d|", k);
+							sprintf(s,"2^%02d",k);
+							// printf("2^%02d|", k);
 							break;
 						}
 					}
 				}
+				int x0=centerX-2*gridSizeX+j*gridSizeX+gridSizeX/2-strlen(s)/2*FONT_WIDTH;
+				int y0=centerY-2*gridSizeY+i*gridSizeY+gridSizeY/2-FONT_HEIGHT/2;
+				drawFont(x0,y0,s,COLOR_BLACK);
 			}
-			else printf("    |");
-		}
-		if (i < 3) {
-			printf("\n|----|----|----|----|\n");
-		}
-		else {
-			printf("\n|----|----|----|----|\n");
 		}
 	}
-	printf("\n");
-	printf("--------------------------------------------------\n");
-	printf("[W]:UP [S]:DOWN [A]:LEFT [D]:RIGHT [Q]:EXIT\n");
-	printf("Enter your operation here:");
-
+	drawFont(FONT_WIDTH,SCREEN_HEIGHT-FONT_HEIGHT*2,"[WASD]:MOVE  [Q]:EXIT",COLOR_WHITE);
+	
 	if (get_null_count() == 0) {
 		check_game_over();
 		if (if_game_over) {
-			printf("\r\nGAME OVER! Try this game again? [Y/N]:     \b\b\b\b");
+			clearAll();
+			char *s="GAME OVER!";
+			drawFont(centerX-strlen(s)/2*FONT_WIDTH,centerY,s,COLOR_RED);
+			s="TRY THE GAME AGAIN? [Y/N]";
+			drawFont(centerX-strlen(s)/2*FONT_WIDTH,centerY+FONT_HEIGHT,s,COLOR_BRIGHTYELLOW);
 		}
 	}
 	if (if_prepare_exit) {
-		printf("\r\nDo you really want to quit this game? [Y/N]:   \b\b");
+		clearAll();
+		char *s="Quit Game? [Y/N]";
+		drawFont(centerX-strlen(s)/2*FONT_WIDTH,centerY,s,COLOR_RED);
 	}
 }
 
@@ -364,6 +365,5 @@ void init_game() {
 }
 
 void release_game() {
-	clear();
-	printf("\n");
+	clearAll();
 }

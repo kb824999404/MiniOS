@@ -104,7 +104,7 @@ PUBLIC void init_keyboard()
  *
  * @param tty  Which TTY is reading the keyboard input.
  *****************************************************************************/
-PUBLIC void keyboard_read(TTY* tty)
+PUBLIC u32 keyboard_read(TTY* tty)
 {
 	u8	scan_code;
 
@@ -320,10 +320,16 @@ PUBLIC void keyboard_read(TTY* tty)
 			key |= alt_l	? FLAG_ALT_L	: 0;
 			key |= alt_r	? FLAG_ALT_R	: 0;
 			key |= pad	? FLAG_PAD	: 0;
-
+			if(!tty->key_display)
+			{
+				tty->key_display=true;
+				return key;
+			}
 			in_process(tty, key);
 		}
 	}
+
+	return 0;
 }
 
 

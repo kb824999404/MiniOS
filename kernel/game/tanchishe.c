@@ -10,17 +10,20 @@
 #include "global.h"
 #include "proto.h"
 #include "graphics.h"
-
+#include "keyboard.h"
+#include "graphics.h"
 
 static bool if_game_over;
 static bool if_exist_game = false;
 static bool stop = false;
-static bool hit = false;
 static const int width = 50;
 static const int height = 20;
 static int x, y, food_x, food_y, score;
 static int tail_x[200], tail_y[200];
 static int ntail = 3;
+static const int drawSize=5;
+static const int centerX=SCREEN_WIDTH/2;
+static const int centerY=PANELSIZE/2+TOPBAR_HEIGHT;
 
 static void menu();
 static void setup();
@@ -30,24 +33,24 @@ static void loop_game();
 
 typedef enum{
 	STOP = 0,
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN
+	DIR_LEFT,
+	DIR_RIGHT,
+	DIR_UP,
+	DIR_DOWN
 }Direction;
 Direction Dir;
 
 void menu(){
-	int a;
-	printf("\n\n");
-	printf("GAME: tanchishe     SCORE: %05d    \n", score);
-	printf("               --------------------------------------------------");
+	char s[40];
+	clearAll();
+	sprintf(s,"GAME: tanchishe   SCORE: %05d",score);
+	drawFont(FONT_WIDTH,FONT_HEIGHT/2,s,COLOR_WHITE);
 }
 
 void setup(){
 	if_game_over = false;
 	srand(time());
-	Dir = RIGHT;
+	Dir = DIR_RIGHT;
 	x = width / 2;
 	y = height / 2;
 	tail_x[0] = x , tail_x[1] = x - 1, tail_x[2] = x - 2;
@@ -61,86 +64,104 @@ void draw(){
 	if (stop == true){
 		return;
 	}
-	clear(); 
-	printf("\n\n");
-	printf(" GAME: tanchishe     SCORE: %05d    \n", score);
-	printf("--------------------------------------------------\n");
+	char s[40];
+	clearAll();
+	sprintf(s,"GAME: tanchishe   SCORE: %05d",score);
+	drawFont(FONT_WIDTH,FONT_HEIGHT/2,s,COLOR_WHITE);
 	int i;
-	for (i = 0; i <= width + 1; i++){
-		printf("-");
-	}
-	printf("\n");
 	int p, q;
+	int X0=centerX-(width+2)*drawSize/2;
+	int Y0=centerY-(height+2)*drawSize/2;
+	drawBox(X0,Y0,X0+(width+2)*drawSize,Y0+(height+2)*drawSize,COLOR_WHITE);
 	for (p = 0; p < height + 1; p++){ 
 		for (q =-1; q < width + 1; q++){
-			if (q == -1 || q == width){
-				printf("|");
-			}
 			if (p == food_y && q == food_x){
-				printf("O");
+				drawBox(X0+(q+1)*drawSize,Y0+(p+1)*drawSize,X0+(q+2)*drawSize,Y0+(p+2)*drawSize,COLOR_RED);
 			}
 			else{
 				int k = 0;
-				bool print = false;
 				for (k = 0; k < ntail; k++){
 					if (tail_x[k] == q && tail_y[k] == p){
-						printf("*");
-						print = true;
+						drawBox(X0+(q+1)*drawSize,Y0+(p+1)*drawSize,X0+(q+2)*drawSize,Y0+(p+2)*drawSize,COLOR_BRIGHTYELLOW);
 					}
-				}
-				if (!print){
-					printf(" ");
 				}
 			}
 		}
-		printf("\n");
 	}
-	int j;
-	for (j = 0; j <= width + 1; j++){
-		printf("-");
-	}
+	drawFont(FONT_WIDTH,SCREEN_HEIGHT-FONT_HEIGHT*2,"WSAD:Move  P:Pause  Enter:Exit",COLOR_WHITE);
 }
 
 void input()
 {
-	char keys[40];
-	int r =read(0, keys, 40);
-	if(strcmp(keys, "a") == 0)
-	{
-		if (Dir != RIGHT) {
-			Dir = LEFT;
-			hit = true;
+	u32 key=kbhit();
+	if (!(key & FLAG_EXT)) {
+		switch (key)
+		{
+			case 'a':
+			case 'A':
+				if (Dir != DIR_RIGHT) {
+					Dir = DIR_LEFT;
+				}
+				break;
+			case 'w':
+			case 'W':
+				if (Dir != DIR_DOWN) {
+					Dir = DIR_UP;
+				}
+				break;
+			case 'd':
+			case 'D':
+				if (Dir != DIR_LEFT) {
+					Dir = DIR_RIGHT;
+				}
+				break;
+			case 's':
+			case 'S':
+				if (Dir != DIR_UP) {
+					Dir = DIR_DOWN;
+				}
+				break;
+			case 'p':
+			case 'P':
+				stop = !stop;
+				if(stop)
+				{
+					drawFont(FONT_WIDTH,FONT_HEIGHT*2,"PAUSE",COLOR_RED);
+				}
+				break;
 		}
 	}
-	else if(strcmp(keys, "w") == 0)
+	else
 	{
-		if (Dir != DOWN) {
-			Dir = UP;
-			hit = true;
+		int raw_code = key & MASK_RAW;
+		switch(raw_code) {
+			case LEFT:
+				if (Dir != DIR_RIGHT) {
+					Dir = DIR_LEFT;
+				}
+				break;
+			case UP:
+				if (Dir != DIR_DOWN) {
+					Dir = DIR_UP;
+				}
+				break;
+			case RIGHT:
+				if (Dir != DIR_LEFT) {
+					Dir = DIR_RIGHT;
+				}
+				break;
+			case DOWN:
+				if (Dir != DIR_UP) {
+					Dir = DIR_DOWN;
+				}
+				break;
+			case ENTER:
+				if_game_over = true;
+				break;
 		}
 	}
-	else if(strcmp(keys, "d") == 0)
-	{
-		if (Dir != LEFT) {
-			Dir = RIGHT;
-			hit = true;
-		}
-	}
-	else if(strcmp(keys, "s") == 0)
-	{
-		if (Dir != UP) {
-			Dir = DOWN;
-			hit = true;
-		}
-	}
-	else if(strcmp(keys, "x") == 0)
-	{
-		if_game_over = true;
-	}
-	else if(strcmp(keys, "p") == 0)
-	{
-		stop = !stop;
-	}
+	
+
 }
 
 void logic()
@@ -151,27 +172,23 @@ void logic()
 	
 	switch (Dir)
 	{
-	case UP:
+	case DIR_UP:
 		y--;
 		break;
-	case DOWN:
+	case DIR_DOWN:
 		y++;
 		break;
-	case LEFT:
+	case DIR_LEFT:
 		x--;
 		break;
-	case RIGHT:
+	case DIR_RIGHT:
 		x++;
 		break;
 		}
 	if ((x < 0 || width < x || y < 0 || height < y) || (tail_x[0] == tail_x[ntail - 1] && tail_y[0] == tail_y[ntail - 1]))
 	{
 		if_game_over = true;
-
-		clear();
-		printf("------------------------------------------------------------------\n");
-		printf("|                            GAME OVER!                          |\n");
-		printf("------------------------------------------------------------------\n");
+		return;
 	}
 
 	int last_x = tail_x[0];
@@ -196,6 +213,8 @@ void logic()
 	if (x == food_x && y == food_y)
 	{
 		ntail++;
+		tail_x[ntail-1] = tail_x[ntail-2];
+		tail_y[ntail-1] = tail_y[ntail-2];
 		score += 10;
 		food_x = rand() % width;
 		food_y = rand() % height;
@@ -208,16 +227,19 @@ void loop_game() {
 			draw();
 			input();
 			logic();
-			milli_delay(70);
+			milli_delay(1000);
 		}
 		else {
-			char choice[40];
-			int r =read(0, choice, 40);
-			choice[r]=0;
-			printf("\r\nGAME OVER! TRY THE GAME AGAIN? [Y/N]:     \b\b\b\b");
-			if(strcmp(choice, "Y") == 0||strcmp(choice, "y") == 0)
+			clearAll();
+			char *s="GAME OVER!";
+			drawFont(centerX-strlen(s)/2*FONT_WIDTH,centerY,s,COLOR_RED);
+			s="TRY THE GAME AGAIN? [Y/N]";
+			drawFont(centerX-strlen(s)/2*FONT_WIDTH,centerY+FONT_HEIGHT,s,COLOR_BRIGHTYELLOW);
+			u32 key=kbhit();
+			if(key=='y'||key=='Y')
 			{
 				setup();
+
 			}
 			else return;
 		}
@@ -226,14 +248,9 @@ void loop_game() {
 
 void runtanchishe()
 {
-#if 0
-	while (1)
-	{
-		printf("%d\n", _getch());
-	}
-#endif
 	menu();
 	setup();
 	draw();
 	loop_game();
+	clearAll();
 }
