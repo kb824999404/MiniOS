@@ -61,7 +61,7 @@ void initUsers()
 	//读取用户名
     fd = open("Users", O_RDWR);
     n = read(fd, bufr, 1024);
-    bufr[strlen(bufr)] = '\0';
+    bufr[n] = '\0';
     for (i = 0; i < strlen(bufr); i++)
     {
         if (bufr[i] != ' ')

@@ -92,7 +92,7 @@ void loop_game() {
 			move_down();
 			break;
 		case 'd':
-			move_left();
+			move_right();
 			break;
 		case 'q':
 			if_prepare_exit = 1;

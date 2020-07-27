@@ -272,6 +272,7 @@ void shabby_shell(const char * tty_name)
 	while (1)
 	{
 		login();
+		readUserFiles();
 		while (1) 	
 		{
 			printf("%s@MiniOS:%s$ ",currentUser,currentFolder);
@@ -348,6 +349,70 @@ void shabby_shell(const char * tty_name)
 							printf("Usage:passwd [username]\n");
 						}
 					}
+					else if(strcmp(argv[0], "ls") == 0)
+					{
+						ls();
+					}
+					else if (strcmp(argv[0], "mkfile") == 0)
+					{
+						if(argc==2)
+						{
+							createFile(argv[1]);
+						}
+						else
+						{
+							printf("Usage:mkfile [filename]\n");
+						}
+
+					}
+					else if (strcmp(argv[0], "cat") == 0)
+					{
+						if(argc==2)
+						{
+							readFile(argv[1]);
+						}
+						else
+						{
+							printf("Usage:cat [filename]\n");
+						}
+
+					}
+					else if (strcmp(argv[0], "rm") == 0)
+					{
+						if(argc==2)
+						{
+							delFile(argv[1]);
+						}
+						else
+						{
+							printf("Usage:rm [filename]\n");
+						}
+
+					}
+					else if (strcmp(argv[0], "wt") == 0)
+					{
+						if(argc==2)
+						{
+							ModifyFile(argv[1]);
+						}
+						else
+						{
+							printf("Usage:wt [filename]\n");
+						}
+
+					}					
+					else if (strcmp(argv[0], "wt+") == 0)
+					{
+						if(argc==2)
+						{
+							AppendFile(argv[1]);
+						}
+						else
+						{
+							printf("Usage:wt+ [filename]\n");
+						}
+
+					}
 					else if (strcmp(argv[0], "logout") == 0)
 					{
 						break;
@@ -418,6 +483,10 @@ void shabby_shell(const char * tty_name)
 							printf("Usage:resume [pid]\n");
 						}
 					}
+					else if (strcmp(argv[0], "help") == 0)
+					{
+						help();
+					}
 					else
 					{
 						if(argc>0)
@@ -450,6 +519,11 @@ void shabby_shell(const char * tty_name)
 
 	close(1);
 	close(0);
+}
+
+void help()
+{
+	
 }
 
 /*****************************************************************************
