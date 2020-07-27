@@ -39,7 +39,7 @@ OBJS		= kernel/kernel.o kernel/start.o kernel/main.o\
 			fs/link.o \
 			fs/disklog.o\
 			graphics/main.o graphics/graphics.o\
-			kernel/game/2048.o kernel/tools/calendar.o kernel/game/tanchishe.o
+			kernel/game/2048.o kernel/tools/calendar.o kernel/game/tanchishe.o kernel/tools/calculator.o
 LOBJS		=  lib/syscall.o\
 			lib/printf.o lib/vsprintf.o\
 			lib/string.o lib/misc.o\
@@ -80,7 +80,7 @@ buildimg :
 	sudo cp -fv boot/loader.bin /mnt/floppy/
 	sudo cp -fv kernel.bin /mnt/floppy
 	sudo umount /mnt/floppy
-	cd command&&make install
+	# cd command&&make install
 
 boot/boot.bin : boot/boot.asm boot/include/load.inc boot/include/fat12hdr.inc
 	$(ASM) $(ASMBFLAGS) -o $@ $<
@@ -255,4 +255,7 @@ kernel/game/tanchishe.o: kernel/game/tanchishe.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 kernel/tools/calendar.o: kernel/tools/calendar.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/tools/calculator.o: kernel/tools/calculator.c
 	$(CC) $(CFLAGS) -o $@ $<

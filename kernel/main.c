@@ -376,6 +376,10 @@ void shabby_shell(const char * tty_name)
 					{
 						runcalendar();
 					}
+					else if (strcmp(argv[0], "calculator") == 0)
+					{
+						runcalculator();
+					}
 					else if (strcmp(argv[0], "proc") == 0)
 					{
 						showProcess();
