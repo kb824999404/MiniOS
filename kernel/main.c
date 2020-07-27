@@ -523,7 +523,28 @@ void shabby_shell(const char * tty_name)
 
 void help()
 {
-	
+	char *operations[]={
+		"clear","users","useradd [username] [password]",
+		"userdel [username]",
+		"passwd [username]",
+		"mkfile [filename]",
+		"cat [filename]",
+		"rm [filename]",
+		"wt [filename]",
+		"wt+ [filename]","logout","sudo","colormode","bmp","2048","tanchishe",
+		"calendar","calculator",
+		"proc [pid]", "kill [pid]","pause [pid]","resume [pid]","help"
+	};
+	int length=sizeof(operations)/sizeof(operations[0]),i;
+	for(i=0;i<length;i++)
+	{
+		printf(" %s\n",operations[i]);
+		if(i%8==0&&i!=0)
+		{
+			printf("------ more ------\n");
+			kbhit();
+		}
+	}
 }
 
 /*****************************************************************************
