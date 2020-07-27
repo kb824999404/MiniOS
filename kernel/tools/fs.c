@@ -80,7 +80,7 @@ void editAppand(char *filepath, char *buf)
     close(fd);
 }
 
-/* Ls */
+/* ls */
 void ls()
 {
     readUserFiles();

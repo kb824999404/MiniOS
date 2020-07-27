@@ -445,6 +445,10 @@ void shabby_shell(const char * tty_name)
 					{
 						runcalculator();
 					}
+					else if (strcmp(argv[0], "pingtu") == 0)
+					{
+						runpingtu();
+					}
 					else if (strcmp(argv[0], "proc") == 0)
 					{
 						showProcess();
@@ -531,7 +535,7 @@ void help()
 		"cat [filename]",
 		"rm [filename]",
 		"wt [filename]",
-		"wt+ [filename]","logout","sudo","colormode","bmp","2048","tanchishe",
+		"wt+ [filename]","logout","sudo","colormode","bmp","2048","tanchishe","pingtu",
 		"calendar","calculator",
 		"proc [pid]", "kill [pid]","pause [pid]","resume [pid]","help"
 	};
