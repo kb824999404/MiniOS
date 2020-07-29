@@ -653,77 +653,77 @@ LOAD lib/orangescrt.a
                 0x0000000000018608                PROVIDE (_etext, .)
                 0x0000000000018608                PROVIDE (etext, .)
 
-.rodata         0x0000000000018620     0x3ee5
+.rodata         0x0000000000018620     0x3f05
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata        0x0000000000018620       0x47 kernel/start.o
  *fill*         0x0000000000018667       0x19 
- .rodata        0x0000000000018680      0x490 kernel/main.o
- .rodata        0x0000000000018b10       0x64 kernel/keyboard.o
- *fill*         0x0000000000018b74        0xc 
- .rodata        0x0000000000018b80      0x298 kernel/tty.o
- .rodata        0x0000000000018e18       0x5b kernel/console.o
- .rodata        0x0000000000018e73       0x11 kernel/i8259.o
- .rodata        0x0000000000018e84       0x10 kernel/global.o
-                0x0000000000018e84                FSBUF_SIZE
-                0x0000000000018e88                MMBUF_SIZE
-                0x0000000000018e8c                LOGBUF_SIZE
-                0x0000000000018e90                LOGDISKBUF_SIZE
- *fill*         0x0000000000018e94        0xc 
- .rodata        0x0000000000018ea0      0x580 kernel/protect.o
- .rodata        0x0000000000019420      0x5da kernel/proc.o
- .rodata        0x00000000000199fa       0x11 kernel/systask.o
- *fill*         0x0000000000019a0b        0x1 
- .rodata        0x0000000000019a0c      0x15c kernel/hd.o
- .rodata        0x0000000000019b68       0x6a kernel/klib.o
- .rodata        0x0000000000019bd2        0xb kernel/tools/welcome.o
- *fill*         0x0000000000019bdd        0x3 
- .rodata        0x0000000000019be0       0xa5 kernel/tools/fs.o
- *fill*         0x0000000000019c85        0x3 
- .rodata        0x0000000000019c88      0x1ec kernel/tools/user.o
- .rodata        0x0000000000019e74       0xb4 kernel/tools/process.o
- .rodata        0x0000000000019f28       0x1e lib/syslog.o
- *fill*         0x0000000000019f46        0x2 
- .rodata        0x0000000000019f48       0xb1 mm/main.o
- *fill*         0x0000000000019ff9        0x3 
- .rodata        0x0000000000019ffc       0xe7 mm/forkexit.o
- *fill*         0x000000000001a0e3        0x1 
- .rodata        0x000000000001a0e4       0xa4 mm/exec.o
- .rodata        0x000000000001a188      0x2be fs/main.o
- *fill*         0x000000000001a446        0x2 
- .rodata        0x000000000001a448      0x198 fs/open.o
- .rodata        0x000000000001a5e0       0x60 fs/misc.o
- .rodata        0x000000000001a640      0x164 fs/read_write.o
- .rodata        0x000000000001a7a4      0x1ad fs/link.o
- *fill*         0x000000000001a951        0x3 
- .rodata        0x000000000001a954      0x806 fs/disklog.o
- *fill*         0x000000000001b15a        0x2 
- .rodata        0x000000000001b15c       0x97 graphics/main.o
- .rodata        0x000000000001b1f3       0x11 graphics/graphics.o
- .rodata        0x000000000001b204       0xd3 kernel/game/2048.o
- *fill*         0x000000000001b2d7        0x1 
- .rodata        0x000000000001b2d8      0x210 kernel/tools/calendar.o
- .rodata        0x000000000001b4e8      0x1f5 kernel/game/tanchishe.o
- *fill*         0x000000000001b6dd        0x3 
- .rodata        0x000000000001b6e0      0x429 kernel/tools/calculator.o
- *fill*         0x000000000001bb09        0x3 
- .rodata        0x000000000001bb0c      0x13a kernel/game/pintu.o
- *fill*         0x000000000001bc46       0x1a 
- .rodata        0x000000000001bc60      0x27e kernel/game/chess.o
- *fill*         0x000000000001bede        0x2 
- .rodata        0x000000000001bee0      0x2e8 kernel/game/pushbox.o
- .rodata        0x000000000001c1c8       0xd7 kernel/game/smgame.o
- *fill*         0x000000000001c29f        0x1 
- .rodata        0x000000000001c2a0       0x7b kernel/game/guessnum.o
- .rodata        0x000000000001c31b       0x14 lib/orangescrt.a(printf.o)
- *fill*         0x000000000001c32f        0x1 
- .rodata        0x000000000001c330       0xad lib/orangescrt.a(misc.o)
- .rodata        0x000000000001c3dd       0x23 lib/orangescrt.a(open.o)
- .rodata        0x000000000001c400       0x25 lib/orangescrt.a(getpid.o)
- .rodata        0x000000000001c425       0x23 lib/orangescrt.a(stat.o)
- .rodata        0x000000000001c448       0x33 lib/orangescrt.a(fork.o)
- *fill*         0x000000000001c47b        0x1 
- .rodata        0x000000000001c47c       0x87 lib/orangescrt.a(exec.o)
- .rodata        0x000000000001c503        0x2 lib/orangescrt.a(graphics.o)
+ .rodata        0x0000000000018680      0x498 kernel/main.o
+ .rodata        0x0000000000018b18       0x64 kernel/keyboard.o
+ *fill*         0x0000000000018b7c        0x4 
+ .rodata        0x0000000000018b80      0x2c0 kernel/tty.o
+ .rodata        0x0000000000018e40       0x5b kernel/console.o
+ .rodata        0x0000000000018e9b       0x11 kernel/i8259.o
+ .rodata        0x0000000000018eac       0x10 kernel/global.o
+                0x0000000000018eac                FSBUF_SIZE
+                0x0000000000018eb0                MMBUF_SIZE
+                0x0000000000018eb4                LOGBUF_SIZE
+                0x0000000000018eb8                LOGDISKBUF_SIZE
+ *fill*         0x0000000000018ebc        0x4 
+ .rodata        0x0000000000018ec0      0x580 kernel/protect.o
+ .rodata        0x0000000000019440      0x5da kernel/proc.o
+ .rodata        0x0000000000019a1a       0x11 kernel/systask.o
+ *fill*         0x0000000000019a2b        0x1 
+ .rodata        0x0000000000019a2c      0x15c kernel/hd.o
+ .rodata        0x0000000000019b88       0x6a kernel/klib.o
+ .rodata        0x0000000000019bf2        0xb kernel/tools/welcome.o
+ *fill*         0x0000000000019bfd        0x3 
+ .rodata        0x0000000000019c00       0xa5 kernel/tools/fs.o
+ *fill*         0x0000000000019ca5        0x3 
+ .rodata        0x0000000000019ca8      0x1ec kernel/tools/user.o
+ .rodata        0x0000000000019e94       0xb4 kernel/tools/process.o
+ .rodata        0x0000000000019f48       0x1e lib/syslog.o
+ *fill*         0x0000000000019f66        0x2 
+ .rodata        0x0000000000019f68       0xb1 mm/main.o
+ *fill*         0x000000000001a019        0x3 
+ .rodata        0x000000000001a01c       0xe7 mm/forkexit.o
+ *fill*         0x000000000001a103        0x1 
+ .rodata        0x000000000001a104       0xa4 mm/exec.o
+ .rodata        0x000000000001a1a8      0x2be fs/main.o
+ *fill*         0x000000000001a466        0x2 
+ .rodata        0x000000000001a468      0x198 fs/open.o
+ .rodata        0x000000000001a600       0x60 fs/misc.o
+ .rodata        0x000000000001a660      0x164 fs/read_write.o
+ .rodata        0x000000000001a7c4      0x1ad fs/link.o
+ *fill*         0x000000000001a971        0x3 
+ .rodata        0x000000000001a974      0x806 fs/disklog.o
+ *fill*         0x000000000001b17a        0x2 
+ .rodata        0x000000000001b17c       0x97 graphics/main.o
+ .rodata        0x000000000001b213       0x11 graphics/graphics.o
+ .rodata        0x000000000001b224       0xd3 kernel/game/2048.o
+ *fill*         0x000000000001b2f7        0x1 
+ .rodata        0x000000000001b2f8      0x210 kernel/tools/calendar.o
+ .rodata        0x000000000001b508      0x1f5 kernel/game/tanchishe.o
+ *fill*         0x000000000001b6fd        0x3 
+ .rodata        0x000000000001b700      0x429 kernel/tools/calculator.o
+ *fill*         0x000000000001bb29        0x3 
+ .rodata        0x000000000001bb2c      0x13a kernel/game/pintu.o
+ *fill*         0x000000000001bc66       0x1a 
+ .rodata        0x000000000001bc80      0x27e kernel/game/chess.o
+ *fill*         0x000000000001befe        0x2 
+ .rodata        0x000000000001bf00      0x2e8 kernel/game/pushbox.o
+ .rodata        0x000000000001c1e8       0xd7 kernel/game/smgame.o
+ *fill*         0x000000000001c2bf        0x1 
+ .rodata        0x000000000001c2c0       0x7b kernel/game/guessnum.o
+ .rodata        0x000000000001c33b       0x14 lib/orangescrt.a(printf.o)
+ *fill*         0x000000000001c34f        0x1 
+ .rodata        0x000000000001c350       0xad lib/orangescrt.a(misc.o)
+ .rodata        0x000000000001c3fd       0x23 lib/orangescrt.a(open.o)
+ .rodata        0x000000000001c420       0x25 lib/orangescrt.a(getpid.o)
+ .rodata        0x000000000001c445       0x23 lib/orangescrt.a(stat.o)
+ .rodata        0x000000000001c468       0x33 lib/orangescrt.a(fork.o)
+ *fill*         0x000000000001c49b        0x1 
+ .rodata        0x000000000001c49c       0x87 lib/orangescrt.a(exec.o)
+ .rodata        0x000000000001c523        0x2 lib/orangescrt.a(graphics.o)
 
 .rodata1
  *(.rodata1)
@@ -731,112 +731,112 @@ LOAD lib/orangescrt.a
 .eh_frame_hdr
  *(.eh_frame_hdr)
 
-.eh_frame       0x000000000001c508     0x272c
+.eh_frame       0x000000000001c528     0x272c
  *(.eh_frame)
- .eh_frame      0x000000000001c508       0x38 kernel/start.o
- .eh_frame      0x000000000001c540      0x134 kernel/main.o
+ .eh_frame      0x000000000001c528       0x38 kernel/start.o
+ .eh_frame      0x000000000001c560      0x134 kernel/main.o
                                         0x14c (松开之前的大小)
- .eh_frame      0x000000000001c674       0xc0 kernel/clock.o
+ .eh_frame      0x000000000001c694       0xc0 kernel/clock.o
                                          0xd8 (松开之前的大小)
- .eh_frame      0x000000000001c734       0xe0 kernel/keyboard.o
+ .eh_frame      0x000000000001c754       0xe0 kernel/keyboard.o
                                          0xf8 (松开之前的大小)
- .eh_frame      0x000000000001c814      0x1c8 kernel/tty.o
+ .eh_frame      0x000000000001c834      0x1c8 kernel/tty.o
                                         0x1e0 (松开之前的大小)
- .eh_frame      0x000000000001c9dc      0x160 kernel/console.o
+ .eh_frame      0x000000000001c9fc      0x160 kernel/console.o
                                         0x178 (松开之前的大小)
- .eh_frame      0x000000000001cb3c       0x60 kernel/i8259.o
+ .eh_frame      0x000000000001cb5c       0x60 kernel/i8259.o
                                          0x78 (松开之前的大小)
- .eh_frame      0x000000000001cb9c       0xb0 kernel/protect.o
+ .eh_frame      0x000000000001cbbc       0xb0 kernel/protect.o
                                          0xc8 (松开之前的大小)
- .eh_frame      0x000000000001cc4c      0x1c0 kernel/proc.o
+ .eh_frame      0x000000000001cc6c      0x1c0 kernel/proc.o
                                         0x1d8 (松开之前的大小)
- .eh_frame      0x000000000001ce0c       0x5c kernel/systask.o
+ .eh_frame      0x000000000001ce2c       0x5c kernel/systask.o
                                          0x74 (松开之前的大小)
- .eh_frame      0x000000000001ce68      0x1e8 kernel/hd.o
+ .eh_frame      0x000000000001ce88      0x1e8 kernel/hd.o
                                         0x200 (松开之前的大小)
- .eh_frame      0x000000000001d050      0x120 kernel/klib.o
+ .eh_frame      0x000000000001d070      0x120 kernel/klib.o
                                         0x138 (松开之前的大小)
- .eh_frame      0x000000000001d170       0x20 kernel/tools/welcome.o
+ .eh_frame      0x000000000001d190       0x20 kernel/tools/welcome.o
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001d190      0x1b8 kernel/tools/fs.o
+ .eh_frame      0x000000000001d1b0      0x1b8 kernel/tools/fs.o
                                         0x1d0 (松开之前的大小)
- .eh_frame      0x000000000001d348      0x16c kernel/tools/user.o
+ .eh_frame      0x000000000001d368      0x16c kernel/tools/user.o
                                         0x184 (松开之前的大小)
- .eh_frame      0x000000000001d4b4       0x80 kernel/tools/process.o
+ .eh_frame      0x000000000001d4d4       0x80 kernel/tools/process.o
                                          0x98 (松开之前的大小)
- .eh_frame      0x000000000001d534       0x20 lib/syslog.o
+ .eh_frame      0x000000000001d554       0x20 lib/syslog.o
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001d554       0x7c mm/main.o
+ .eh_frame      0x000000000001d574       0x7c mm/main.o
                                          0x94 (松开之前的大小)
- .eh_frame      0x000000000001d5d0       0x90 mm/forkexit.o
+ .eh_frame      0x000000000001d5f0       0x90 mm/forkexit.o
                                          0xa8 (松开之前的大小)
- .eh_frame      0x000000000001d660       0x2c mm/exec.o
+ .eh_frame      0x000000000001d680       0x2c mm/exec.o
                                          0x44 (松开之前的大小)
- .eh_frame      0x000000000001d68c      0x174 fs/main.o
+ .eh_frame      0x000000000001d6ac      0x174 fs/main.o
                                         0x18c (松开之前的大小)
- .eh_frame      0x000000000001d800      0x128 fs/open.o
+ .eh_frame      0x000000000001d820      0x128 fs/open.o
                                         0x140 (松开之前的大小)
- .eh_frame      0x000000000001d928       0x70 fs/misc.o
+ .eh_frame      0x000000000001d948       0x70 fs/misc.o
                                          0x88 (松开之前的大小)
- .eh_frame      0x000000000001d998       0x2c fs/read_write.o
+ .eh_frame      0x000000000001d9b8       0x2c fs/read_write.o
                                          0x44 (松开之前的大小)
- .eh_frame      0x000000000001d9c4       0x4c fs/link.o
+ .eh_frame      0x000000000001d9e4       0x4c fs/link.o
                                          0x64 (松开之前的大小)
- .eh_frame      0x000000000001da10       0x60 fs/disklog.o
+ .eh_frame      0x000000000001da30       0x60 fs/disklog.o
                                          0x78 (松开之前的大小)
- .eh_frame      0x000000000001da70      0x158 graphics/main.o
+ .eh_frame      0x000000000001da90      0x158 graphics/main.o
                                         0x170 (松开之前的大小)
- .eh_frame      0x000000000001dbc8      0x1c0 graphics/graphics.o
+ .eh_frame      0x000000000001dbe8      0x1c0 graphics/graphics.o
                                         0x1d8 (松开之前的大小)
- .eh_frame      0x000000000001dd88      0x1b0 kernel/game/2048.o
+ .eh_frame      0x000000000001dda8      0x1b0 kernel/game/2048.o
                                         0x1c8 (松开之前的大小)
- .eh_frame      0x000000000001df38      0x104 kernel/tools/calendar.o
+ .eh_frame      0x000000000001df58      0x104 kernel/tools/calendar.o
                                         0x11c (松开之前的大小)
- .eh_frame      0x000000000001e03c       0xf0 kernel/game/tanchishe.o
+ .eh_frame      0x000000000001e05c       0xf0 kernel/game/tanchishe.o
                                         0x108 (松开之前的大小)
- .eh_frame      0x000000000001e12c      0x26c kernel/tools/calculator.o
+ .eh_frame      0x000000000001e14c      0x26c kernel/tools/calculator.o
                                         0x284 (松开之前的大小)
- .eh_frame      0x000000000001e398       0xfc kernel/game/pintu.o
+ .eh_frame      0x000000000001e3b8       0xfc kernel/game/pintu.o
                                         0x114 (松开之前的大小)
- .eh_frame      0x000000000001e494      0x130 kernel/game/chess.o
+ .eh_frame      0x000000000001e4b4      0x130 kernel/game/chess.o
                                         0x148 (松开之前的大小)
- .eh_frame      0x000000000001e5c4       0x80 kernel/game/pushbox.o
+ .eh_frame      0x000000000001e5e4       0x80 kernel/game/pushbox.o
                                          0x98 (松开之前的大小)
- .eh_frame      0x000000000001e644      0x16c kernel/game/smgame.o
+ .eh_frame      0x000000000001e664      0x16c kernel/game/smgame.o
                                         0x184 (松开之前的大小)
- .eh_frame      0x000000000001e7b0       0x20 kernel/game/guessnum.o
+ .eh_frame      0x000000000001e7d0       0x20 kernel/game/guessnum.o
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001e7d0       0x40 lib/orangescrt.a(printf.o)
+ .eh_frame      0x000000000001e7f0       0x40 lib/orangescrt.a(printf.o)
                                          0x58 (松开之前的大小)
- .eh_frame      0x000000000001e810       0x68 lib/orangescrt.a(vsprintf.o)
+ .eh_frame      0x000000000001e830       0x68 lib/orangescrt.a(vsprintf.o)
                                          0x80 (松开之前的大小)
- .eh_frame      0x000000000001e878       0xbc lib/orangescrt.a(misc.o)
+ .eh_frame      0x000000000001e898       0xbc lib/orangescrt.a(misc.o)
                                          0xd4 (松开之前的大小)
- .eh_frame      0x000000000001e934       0x20 lib/orangescrt.a(open.o)
+ .eh_frame      0x000000000001e954       0x20 lib/orangescrt.a(open.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001e954       0x20 lib/orangescrt.a(read.o)
+ .eh_frame      0x000000000001e974       0x20 lib/orangescrt.a(read.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001e974       0x20 lib/orangescrt.a(write.o)
+ .eh_frame      0x000000000001e994       0x20 lib/orangescrt.a(write.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001e994       0x20 lib/orangescrt.a(close.o)
+ .eh_frame      0x000000000001e9b4       0x20 lib/orangescrt.a(close.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001e9b4       0x20 lib/orangescrt.a(unlink.o)
+ .eh_frame      0x000000000001e9d4       0x20 lib/orangescrt.a(unlink.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001e9d4       0x20 lib/orangescrt.a(lseek.o)
+ .eh_frame      0x000000000001e9f4       0x20 lib/orangescrt.a(lseek.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001e9f4       0x20 lib/orangescrt.a(getpid.o)
+ .eh_frame      0x000000000001ea14       0x20 lib/orangescrt.a(getpid.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001ea14       0x20 lib/orangescrt.a(stat.o)
+ .eh_frame      0x000000000001ea34       0x20 lib/orangescrt.a(stat.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001ea34       0x20 lib/orangescrt.a(fork.o)
+ .eh_frame      0x000000000001ea54       0x20 lib/orangescrt.a(fork.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001ea54       0x20 lib/orangescrt.a(wait.o)
+ .eh_frame      0x000000000001ea74       0x20 lib/orangescrt.a(wait.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x000000000001ea74       0x60 lib/orangescrt.a(exec.o)
+ .eh_frame      0x000000000001ea94       0x60 lib/orangescrt.a(exec.o)
                                          0x78 (松开之前的大小)
- .eh_frame      0x000000000001ead4      0x140 lib/orangescrt.a(graphics.o)
+ .eh_frame      0x000000000001eaf4      0x140 lib/orangescrt.a(graphics.o)
                                         0x158 (松开之前的大小)
- .eh_frame      0x000000000001ec14       0x20 lib/orangescrt.a(kbhit.o)
+ .eh_frame      0x000000000001ec34       0x20 lib/orangescrt.a(kbhit.o)
                                          0x38 (松开之前的大小)
 
 .gcc_except_table
@@ -844,7 +844,7 @@ LOAD lib/orangescrt.a
 
 .exception_ranges
  *(.exception_ranges .exception_ranges*)
-                0x000000000001ec34                . = (ALIGN (0x1000) - ((0x1000 - .) & 0xfff))
+                0x000000000001ec54                . = (ALIGN (0x1000) - ((0x1000 - .) & 0xfff))
                 0x000000000001f000                . = DATA_SEGMENT_ALIGN (0x1000, 0x1000)
 
 .eh_frame
