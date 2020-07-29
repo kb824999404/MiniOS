@@ -40,7 +40,7 @@ OBJS		= kernel/kernel.o kernel/start.o kernel/main.o\
 			fs/disklog.o\
 			graphics/main.o graphics/graphics.o\
 			kernel/game/2048.o kernel/tools/calendar.o kernel/game/tanchishe.o kernel/tools/calculator.o\
-			kernel/game/pingtu.o
+			kernel/game/pintu.o kernel/game/chess.o kernel/game/pushbox.o kernel/game/smgame.o kernel/game/guessnum.o
 LOBJS		=  lib/syscall.o\
 			lib/printf.o lib/vsprintf.o\
 			lib/string.o lib/misc.o\
@@ -261,5 +261,17 @@ kernel/tools/calendar.o: kernel/tools/calendar.c
 kernel/tools/calculator.o: kernel/tools/calculator.c
 	$(CC) $(CFLAGS) -o $@ $<
 
-kernel/game/pingtu.o: kernel/game/pingtu.c
+kernel/game/pintu.o: kernel/game/pintu.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/game/pushbox.o: kernel/game/pushbox.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/game/chess.o: kernel/game/chess.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/game/smgame.o: kernel/game/smgame.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+kernel/game/guessnum.o: kernel/game/guessnum.c
 	$(CC) $(CFLAGS) -o $@ $<

@@ -337,7 +337,16 @@ PRIVATE void match(TTY* tty)
 {
     int index;
 	char *operations[]={
-		"ps","pause","resume","pstree"
+		"clear","users","useradd",
+		"userdel",
+		"passwd",
+		"mkfile",
+		"cat",
+		"rm",
+		"wt",
+		"wt+","logout","sudo","colormode","bmp","2048","tanchishe","pintu","chess","pushbox","smgame","guessnum",
+		"calendar","calculator",
+		"proc", "kill","pause","resume","help"
 	};
 	int length=sizeof(operations)/sizeof(operations[0]);
 	if(tty->inputing[0]!=' ')

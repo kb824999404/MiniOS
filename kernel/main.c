@@ -445,9 +445,25 @@ void shabby_shell(const char * tty_name)
 					{
 						runcalculator();
 					}
-					else if (strcmp(argv[0], "pingtu") == 0)
+					else if (strcmp(argv[0], "pintu") == 0)
 					{
-						runpingtu();
+						runpintu();
+					}
+					else if (strcmp(argv[0], "chess") == 0)
+					{
+						runchess();
+					}
+					else if (strcmp(argv[0], "pushbox") == 0)
+					{
+						runpushbox();
+					}
+					else if (strcmp(argv[0], "smgame") == 0)
+					{
+						runsmgame();
+					}
+					else if (strcmp(argv[0], "guessnum") == 0)
+					{
+						runguess();
 					}
 					else if (strcmp(argv[0], "proc") == 0)
 					{
@@ -535,9 +551,9 @@ void help()
 		"cat [filename]",
 		"rm [filename]",
 		"wt [filename]",
-		"wt+ [filename]","logout","sudo","colormode","bmp","2048","tanchishe","pingtu",
+		"wt+ [filename]","logout","sudo","colormode","bmp","2048","tanchishe","pintu","chess","pushbox","smgame","guessnum",
 		"calendar","calculator",
-		"proc [pid]", "kill [pid]","pause [pid]","resume [pid]","help"
+		"proc", "kill [pid]","pause [pid]","resume [pid]","help"
 	};
 	int length=sizeof(operations)/sizeof(operations[0]),i;
 	for(i=0;i<length;i++)

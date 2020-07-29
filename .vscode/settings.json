@@ -8,6 +8,7 @@
         "xiosbase": "c",
         "xlocale": "c",
         "string": "c",
-        "xstring": "c"
+        "xstring": "c",
+        "ctime": "c"
     }
 }

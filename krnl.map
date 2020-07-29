@@ -22,38 +22,58 @@ lib/orangescrt.a(syscall.o)   lib/orangescrt.a(misc.o) (sendrec)
 分配公共符号
 公共符号            大小              文件
 
+map                 0x2710            kernel/game/smgame.o
 idt_ptr             0x6               kernel/global.o
+b                   0x4               kernel/game/chess.o
 graphics_msg        0x30              kernel/global.o
+x                   0x4               kernel/game/chess.o
 inode_table         0xb00             kernel/global.o
 task_stack          0x24000           kernel/global.o
-board               0x9               kernel/game/pingtu.o
+_a                  0x4               kernel/game/smgame.o
+board               0x9               kernel/game/pintu.o
 k_reenter           0x4               kernel/global.o
-init_x              0x4               kernel/game/pingtu.o
+init_x              0x4               kernel/game/pintu.o
 gdt                 0x400             kernel/global.o
 current_console     0x4               kernel/global.o
 pcaller             0x4               kernel/global.o
 tty_table           0x261c            kernel/global.o
+maxscore            0x4               kernel/game/smgame.o
 tss                 0x68              kernel/global.o
+na                  0x4               kernel/game/smgame.o
+score               0x4               kernel/game/smgame.o
 fs_msg              0x30              kernel/global.o
 memory_size         0x4               kernel/global.o
+_b                  0x4               kernel/game/smgame.o
 f_desc_table        0x400             kernel/global.o
 root_inode          0x4               kernel/global.o
+c                   0x4               kernel/game/chess.o
 disp_pos            0x4               kernel/global.o
 files               0xa00             kernel/tools/fs.o
 mm_msg              0x30              kernel/global.o
 Dir                 0x4               kernel/game/tanchishe.o
 key_pressed         0x4               kernel/global.o
-init_y              0x4               kernel/game/pingtu.o
+init_y              0x4               kernel/game/pintu.o
 gdt_ptr             0x6               kernel/global.o
+d                   0x4               kernel/game/chess.o
 users               0xa00             kernel/tools/user.o
 idt                 0x800             kernel/global.o
 super_block         0x1e0             kernel/global.o
+count               0x4               kernel/game/pushbox.o
+ny                  0x4               kernel/game/smgame.o
 PARTITION_ENTRY     0x10              kernel/hd.o
 ticks               0x4               kernel/global.o
+speed               0x4               kernel/game/smgame.o
+nb                  0x4               kernel/game/smgame.o
+downtime            0x4               kernel/game/smgame.o
 console_table       0x564             kernel/global.o
 irq_table           0x40              kernel/global.o
+a                   0x4               kernel/game/chess.o
 p_proc_ready        0x4               kernel/global.o
+st                  0x4               kernel/game/smgame.o
+chess               0x190             kernel/game/chess.o
+nowt                0x4               kernel/game/smgame.o
 proc_table          0x3ef0            kernel/global.o
+nx                  0x4               kernel/game/smgame.o
 
 舍弃的输入节
 
@@ -124,7 +144,15 @@ proc_table          0x3ef0            kernel/global.o
  .note.GNU-stack
                 0x0000000000000000        0x0 kernel/tools/calculator.o
  .note.GNU-stack
-                0x0000000000000000        0x0 kernel/game/pingtu.o
+                0x0000000000000000        0x0 kernel/game/pintu.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 kernel/game/chess.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 kernel/game/pushbox.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 kernel/game/smgame.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 kernel/game/guessnum.o
  .note.GNU-stack
                 0x0000000000000000        0x0 lib/orangescrt.a(printf.o)
  .note.GNU-stack
@@ -201,7 +229,11 @@ LOAD kernel/game/2048.o
 LOAD kernel/tools/calendar.o
 LOAD kernel/game/tanchishe.o
 LOAD kernel/tools/calculator.o
-LOAD kernel/game/pingtu.o
+LOAD kernel/game/pintu.o
+LOAD kernel/game/chess.o
+LOAD kernel/game/pushbox.o
+LOAD kernel/game/smgame.o
+LOAD kernel/game/guessnum.o
 LOAD lib/orangescrt.a
                 0x0000000008048000                PROVIDE (__executable_start, 0x8048000)
                 0x0000000008048094                . = (0x8048000 + SIZEOF_HEADERS)
@@ -265,7 +297,7 @@ LOAD lib/orangescrt.a
  *(.iplt)
  .iplt          0x0000000000000000        0x0 kernel/kernel.o
 
-.text           0x0000000000001000    0x13608
+.text           0x0000000000001000    0x17608
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
@@ -309,371 +341,389 @@ LOAD lib/orangescrt.a
                 0x00000000000013eb                restart
  .text          0x0000000000001410       0x8e kernel/start.o
                 0x0000000000001410                cstart
- .text          0x000000000000149e      0xfd1 kernel/main.o
+ .text          0x000000000000149e     0x1067 kernel/main.o
                 0x000000000000149e                kernel_main
                 0x00000000000017f5                get_ticks
                 0x000000000000182d                untar
                 0x0000000000001b02                shabby_shell
-                0x0000000000002250                help
-                0x00000000000022d0                Init
-                0x0000000000002410                TestA
-                0x0000000000002415                TestB
-                0x000000000000241a                TestC
-                0x000000000000241f                panic
- .text          0x000000000000246f      0x207 kernel/clock.o
-                0x000000000000246f                clock_handler
-                0x000000000000255c                milli_delay
-                0x0000000000002595                init_clock
-                0x00000000000025f9                time
-                0x0000000000002628                srand
-                0x0000000000002635                rand
- .text          0x0000000000002676      0x6f1 kernel/keyboard.o
-                0x0000000000002676                keyboard_handler
-                0x00000000000026dc                init_keyboard
-                0x000000000000278b                keyboard_read
- .text          0x0000000000002d67      0xf60 kernel/tty.o
-                0x0000000000002d67                task_tty
-                0x0000000000002ff5                in_process
-                0x00000000000039ce                sys_printx
-                0x0000000000003b70                dump_tty_buf
- .text          0x0000000000003cc7      0xa03 kernel/console.o
-                0x0000000000003cc7                init_screen
-                0x0000000000003deb                out_char
-                0x00000000000041fd                putfont
-                0x00000000000042e7                is_current_console
-                0x00000000000043d7                select_console
-                0x00000000000043f4                scroll_screen
- .text          0x00000000000046ca      0x13c kernel/i8259.o
-                0x00000000000046ca                init_8259A
-                0x00000000000047bb                spurious_irq
-                0x00000000000047e6                put_irq_handler
- .text          0x0000000000004806        0x0 kernel/global.o
- .text          0x0000000000004806      0x842 kernel/protect.o
-                0x0000000000004806                init_prot
-                0x0000000000004e60                seg2linear
-                0x0000000000004eaf                init_desc
-                0x0000000000004f1b                exception_handler
- .text          0x0000000000005048     0x1967 kernel/proc.o
-                0x0000000000005048                schedule
-                0x00000000000050d9                sys_sendrec
-                0x0000000000005238                ldt_seg_linear
-                0x0000000000005282                va2la
-                0x00000000000052f1                reset_msg
-                0x0000000000006342                inform_int
-                0x00000000000064ff                dump_proc
-                0x0000000000006868                dump_msg
- .text          0x00000000000069af      0x2cf kernel/systask.o
-                0x00000000000069af                task_sys
- .text          0x0000000000006c7e      0xd88 kernel/hd.o
-                0x0000000000006c7e                task_hd
-                0x00000000000079e1                hd_handler
- *fill*         0x0000000000007a06        0xa 
- .text          0x0000000000007a10      0x1e9 kernel/kliba.o
-                0x0000000000007a10                io_hlt
-                0x0000000000007a12                io_cli
-                0x0000000000007a14                io_sti
-                0x0000000000007a16                io_stihlt
-                0x0000000000007a19                io_in8
-                0x0000000000007a24                io_in16
-                0x0000000000007a30                io_in32
-                0x0000000000007a36                io_out8
-                0x0000000000007a4b                io_out32
-                0x0000000000007a55                io_load_eflags
-                0x0000000000007a58                io_store_eflags
-                0x0000000000007a5f                disp_str
-                0x0000000000007a9d                disp_color_str
-                0x0000000000007adc                out_byte
-                0x0000000000007ae8                in_byte
-                0x0000000000007af2                port_read
-                0x0000000000007b05                port_write
-                0x0000000000007b18                disable_irq
-                0x0000000000007b4d                enable_irq
-                0x0000000000007b6c                disable_int
-                0x0000000000007b6e                enable_int
-                0x0000000000007b70                glitter
- .text          0x0000000000007bf9      0x426 kernel/klib.o
-                0x0000000000007bf9                get_boot_params
-                0x0000000000007c99                get_kernel_map
-                0x0000000000007db5                itoa
-                0x0000000000007e60                disp_int
-                0x0000000000007e85                delay
-                0x0000000000007ecb                isspace
-                0x0000000000007ef7                isdigit
-                0x0000000000007f1d                atoi
-                0x0000000000007fe3                readint
- .text          0x000000000000801f       0x97 kernel/tools/welcome.o
-                0x000000000000801f                welcome
- .text          0x00000000000080b6      0x9dc kernel/tools/fs.o
-                0x00000000000080b6                editCover
-                0x00000000000081c6                editAppand
-                0x0000000000008345                ls
-                0x0000000000008390                pathFilter
-                0x0000000000008467                createFilepath
-                0x00000000000084f3                createFile
-                0x0000000000008603                readFile
-                0x00000000000086c1                delFile
-                0x0000000000008805                ModifyFile
-                0x00000000000088b9                AppendFile
-                0x000000000000896d                clearArr
-                0x0000000000008995                readUserFiles
-                0x0000000000008a22                updateUserFiles
- .text          0x0000000000008a92      0xd73 kernel/tools/user.o
-                0x0000000000008a92                vertify
-                0x0000000000008abc                initUsers
-                0x0000000000008e92                searchUser
-                0x0000000000008ef1                login
-                0x0000000000009131                showUsers
-                0x00000000000091ab                addUser
-                0x00000000000092e0                delUser
-                0x0000000000009444                updateUsers
-                0x000000000000954a                passwd
-                0x00000000000095e2                modifyPassword
-                0x000000000000976b                sudo
- .text          0x0000000000009805      0x2db kernel/tools/process.o
-                0x0000000000009805                showProcess
-                0x000000000000999c                killpro
-                0x0000000000009a08                pausepro
-                0x0000000000009a74                resume
- .text          0x0000000000009ae0       0x75 lib/syslog.o
-                0x0000000000009ae0                syslog
- .text          0x0000000000009b55      0x1d6 mm/main.o
-                0x0000000000009b55                task_mm
-                0x0000000000009c9b                alloc_mem
-                0x0000000000009d21                free_mem
- .text          0x0000000000009d2b      0x629 mm/forkexit.o
-                0x0000000000009d2b                do_fork
-                0x000000000000a0ca                do_exit
-                0x000000000000a298                do_wait
- .text          0x000000000000a354      0x392 mm/exec.o
-                0x000000000000a354                do_exec
- .text          0x000000000000a6e6     0x1290 fs/main.o
-                0x000000000000a6e6                task_fs
-                0x000000000000b314                rw_sector
-                0x000000000000b54e                get_super_block
-                0x000000000000b594                get_inode
-                0x000000000000b702                put_inode
-                0x000000000000b747                sync_inode
- .text          0x000000000000b976      0xc07 fs/open.o
-                0x000000000000b976                do_open
-                0x000000000000beaf                do_close
-                0x000000000000bf26                do_lseek
- .text          0x000000000000c57d      0x3f6 fs/misc.o
-                0x000000000000c57d                do_stat
-                0x000000000000c76e                search_file
-                0x000000000000c8e7                strip_path
- .text          0x000000000000c973      0x538 fs/read_write.o
-                0x000000000000c973                do_rdwt
- .text          0x000000000000ceab      0x98d fs/link.o
-                0x000000000000ceab                convert_to_absolute
-                0x000000000000cf42                do_unlink
- .text          0x000000000000d838     0x215a fs/disklog.o
-                0x000000000000d838                disklog
-                0x000000000000de7e                dump_fd_graph
- .text          0x000000000000f992      0x637 graphics/main.o
-                0x000000000000f992                task_graphics
-                0x000000000000faa7                do_drawBMP
-                0x000000000000fb4f                do_topBar
-                0x000000000000fbfc                do_clear
-                0x000000000000fc09                do_drawFont
-                0x000000000000fcd0                do_drawPixel
-                0x000000000000fd0a                do_drawBox
-                0x000000000000fd5b                do_drawLine
-                0x000000000000fe71                do_drawCircle
-                0x000000000000ff97                do_changeColorMode
- .text          0x000000000000ffc9      0x682 graphics/graphics.o
-                0x000000000000ffc9                init_graphics
-                0x000000000000ffdb                init_palette
-                0x0000000000010000                grayPalette
-                0x0000000000010025                colorPalette
-                0x000000000001004a                clearScreen
-                0x0000000000010086                readBMP
-                0x0000000000010252                set_palette
-                0x00000000000102f8                boxfill8
-                0x0000000000010360                updateTopbar
-                0x0000000000010414                clearFonts
-                0x0000000000010450                putfont8
-                0x0000000000010557                putfonts8_char
-                0x0000000000010596                putfonts8_asc
-                0x00000000000105e9                pixel
- .text          0x000000000001064b     0x10d4 kernel/game/2048.o
-                0x000000000001064b                run2048
-                0x000000000001065d                loop_game
-                0x0000000000010763                reset_game
-                0x000000000001081a                add_rand_num
-                0x00000000000108ea                get_null_count
-                0x0000000000010940                check_game_over
-                0x00000000000109ed                move_left
-                0x0000000000010bc4                move_right
-                0x0000000000010d9b                move_up
-                0x0000000000010f6b                move_down
-                0x0000000000011142                refresh_screen
-                0x0000000000011705                init_game
-                0x0000000000011712                release_game
- .text          0x000000000001171f      0x5cb kernel/tools/calendar.o
-                0x000000000001171f                runcalendar
-                0x0000000000011788                is_leap
-                0x00000000000117ec                day_count
-                0x0000000000011859                total_day
-                0x000000000001189b                weekday
-                0x0000000000011946                print_weekday
-                0x0000000000011af8                print_month
-                0x0000000000011c32                print_total_day
- .text          0x0000000000011cea      0x84b kernel/game/tanchishe.o
-                0x00000000000121ff                logic
-                0x0000000000012514                runtanchishe
- .text          0x0000000000012535      0x95c kernel/tools/calculator.o
-                0x0000000000012535                num_stack_is_empty
-                0x0000000000012545                num_stack_push
-                0x0000000000012566                num_stack_pop
-                0x00000000000125ad                num_stack_clear
-                0x00000000000125e3                num_stack_get_top
-                0x0000000000012604                op_stack_is_empty
-                0x0000000000012614                op_stack_push
-                0x000000000001263e                op_stack_pop
-                0x0000000000012682                op_stack_get_top
-                0x00000000000126a3                op_stack_clear
-                0x00000000000126d6                is_digit
-                0x00000000000126fc                isp
-                0x000000000001278f                icp
-                0x0000000000012822                pow
-                0x0000000000012853                get_two_num
-                0x00000000000128ba                do_operator
-                0x00000000000129f8                run
-                0x0000000000012be0                format
-                0x0000000000012e11                runcalculator
- .text          0x0000000000012e91      0x814 kernel/game/pingtu.o
-                0x0000000000013623                runpingtu
- .text          0x00000000000136a5       0xc0 lib/orangescrt.a(printf.o)
-                0x00000000000136a5                printf
-                0x0000000000013724                printl
- .text          0x0000000000013765      0x318 lib/orangescrt.a(vsprintf.o)
-                0x00000000000137c8                vsprintf
-                0x0000000000013a53                sprintf
- *fill*         0x0000000000013a7d        0x3 
- .text          0x0000000000013a80       0x78 lib/orangescrt.a(string.o)
-                0x0000000000013a80                memcpy
-                0x0000000000013aa9                memset
-                0x0000000000013aca                strcpy
-                0x0000000000013ae2                strlen
- .text          0x0000000000013af8      0x288 lib/orangescrt.a(misc.o)
-                0x0000000000013af8                send_recv
-                0x0000000000013bd8                memcmp
-                0x0000000000013c4e                strcmp
-                0x0000000000013cc0                strcat
-                0x0000000000013d1f                spin
-                0x0000000000013d3a                assertion_failure
- .text          0x0000000000013d80       0x73 lib/orangescrt.a(open.o)
-                0x0000000000013d80                open
- .text          0x0000000000013df3       0x3f lib/orangescrt.a(read.o)
-                0x0000000000013df3                read
- .text          0x0000000000013e32       0x3f lib/orangescrt.a(write.o)
-                0x0000000000013e32                write
- .text          0x0000000000013e71       0x33 lib/orangescrt.a(close.o)
-                0x0000000000013e71                close
- .text          0x0000000000013ea4       0x41 lib/orangescrt.a(unlink.o)
-                0x0000000000013ea4                unlink
- .text          0x0000000000013ee5       0x3f lib/orangescrt.a(lseek.o)
-                0x0000000000013ee5                lseek
- .text          0x0000000000013f24       0x59 lib/orangescrt.a(getpid.o)
-                0x0000000000013f24                getpid
- .text          0x0000000000013f7d       0x73 lib/orangescrt.a(stat.o)
-                0x0000000000013f7d                stat
- .text          0x0000000000013ff0       0x84 lib/orangescrt.a(fork.o)
-                0x0000000000013ff0                fork
- .text          0x0000000000014074       0x44 lib/orangescrt.a(wait.o)
-                0x0000000000014074                wait
- .text          0x00000000000140b8      0x263 lib/orangescrt.a(exec.o)
-                0x00000000000140b8                exec
-                0x0000000000014133                execl
-                0x0000000000014159                execv
- .text          0x000000000001431b      0x288 lib/orangescrt.a(graphics.o)
-                0x000000000001431b                drawBMP
-                0x000000000001435c                topBar
-                0x000000000001439d                clearAll
-                0x00000000000143c7                changeColorMode
-                0x00000000000143f1                drawFont
-                0x0000000000014448                drawPixel
-                0x000000000001448e                drawBox
-                0x00000000000144dd                drawLine
-                0x000000000001452c                drawCircle
-                0x0000000000014575                clear
- .text          0x00000000000145a3       0x34 lib/orangescrt.a(kbhit.o)
-                0x00000000000145a3                kbhit
- *fill*         0x00000000000145d7        0x9 
- .text          0x00000000000145e0       0x28 lib/orangescrt.a(syscall.o)
-                0x00000000000145e0                sendrec
-                0x00000000000145fa                printx
+                0x00000000000022e0                help
+                0x0000000000002366                Init
+                0x00000000000024a6                TestA
+                0x00000000000024ab                TestB
+                0x00000000000024b0                TestC
+                0x00000000000024b5                panic
+ .text          0x0000000000002505      0x207 kernel/clock.o
+                0x0000000000002505                clock_handler
+                0x00000000000025f2                milli_delay
+                0x000000000000262b                init_clock
+                0x000000000000268f                time
+                0x00000000000026be                srand
+                0x00000000000026cb                rand
+ .text          0x000000000000270c      0x6f1 kernel/keyboard.o
+                0x000000000000270c                keyboard_handler
+                0x0000000000002772                init_keyboard
+                0x0000000000002821                keyboard_read
+ .text          0x0000000000002dfd      0xf71 kernel/tty.o
+                0x0000000000002dfd                task_tty
+                0x000000000000308b                in_process
+                0x0000000000003a75                sys_printx
+                0x0000000000003c17                dump_tty_buf
+ .text          0x0000000000003d6e      0xa03 kernel/console.o
+                0x0000000000003d6e                init_screen
+                0x0000000000003e92                out_char
+                0x00000000000042a4                putfont
+                0x000000000000438e                is_current_console
+                0x000000000000447e                select_console
+                0x000000000000449b                scroll_screen
+ .text          0x0000000000004771      0x13c kernel/i8259.o
+                0x0000000000004771                init_8259A
+                0x0000000000004862                spurious_irq
+                0x000000000000488d                put_irq_handler
+ .text          0x00000000000048ad        0x0 kernel/global.o
+ .text          0x00000000000048ad      0x842 kernel/protect.o
+                0x00000000000048ad                init_prot
+                0x0000000000004f07                seg2linear
+                0x0000000000004f56                init_desc
+                0x0000000000004fc2                exception_handler
+ .text          0x00000000000050ef     0x1967 kernel/proc.o
+                0x00000000000050ef                schedule
+                0x0000000000005180                sys_sendrec
+                0x00000000000052df                ldt_seg_linear
+                0x0000000000005329                va2la
+                0x0000000000005398                reset_msg
+                0x00000000000063e9                inform_int
+                0x00000000000065a6                dump_proc
+                0x000000000000690f                dump_msg
+ .text          0x0000000000006a56      0x2cf kernel/systask.o
+                0x0000000000006a56                task_sys
+ .text          0x0000000000006d25      0xd88 kernel/hd.o
+                0x0000000000006d25                task_hd
+                0x0000000000007a88                hd_handler
+ *fill*         0x0000000000007aad        0x3 
+ .text          0x0000000000007ab0      0x1e9 kernel/kliba.o
+                0x0000000000007ab0                io_hlt
+                0x0000000000007ab2                io_cli
+                0x0000000000007ab4                io_sti
+                0x0000000000007ab6                io_stihlt
+                0x0000000000007ab9                io_in8
+                0x0000000000007ac4                io_in16
+                0x0000000000007ad0                io_in32
+                0x0000000000007ad6                io_out8
+                0x0000000000007aeb                io_out32
+                0x0000000000007af5                io_load_eflags
+                0x0000000000007af8                io_store_eflags
+                0x0000000000007aff                disp_str
+                0x0000000000007b3d                disp_color_str
+                0x0000000000007b7c                out_byte
+                0x0000000000007b88                in_byte
+                0x0000000000007b92                port_read
+                0x0000000000007ba5                port_write
+                0x0000000000007bb8                disable_irq
+                0x0000000000007bed                enable_irq
+                0x0000000000007c0c                disable_int
+                0x0000000000007c0e                enable_int
+                0x0000000000007c10                glitter
+ .text          0x0000000000007c99      0x426 kernel/klib.o
+                0x0000000000007c99                get_boot_params
+                0x0000000000007d39                get_kernel_map
+                0x0000000000007e55                itoa
+                0x0000000000007f00                disp_int
+                0x0000000000007f25                delay
+                0x0000000000007f6b                isspace
+                0x0000000000007f97                isdigit
+                0x0000000000007fbd                atoi
+                0x0000000000008083                readint
+ .text          0x00000000000080bf       0x97 kernel/tools/welcome.o
+                0x00000000000080bf                welcome
+ .text          0x0000000000008156      0x9dc kernel/tools/fs.o
+                0x0000000000008156                editCover
+                0x0000000000008266                editAppand
+                0x00000000000083e5                ls
+                0x0000000000008430                pathFilter
+                0x0000000000008507                createFilepath
+                0x0000000000008593                createFile
+                0x00000000000086a3                readFile
+                0x0000000000008761                delFile
+                0x00000000000088a5                ModifyFile
+                0x0000000000008959                AppendFile
+                0x0000000000008a0d                clearArr
+                0x0000000000008a35                readUserFiles
+                0x0000000000008ac2                updateUserFiles
+ .text          0x0000000000008b32      0xd73 kernel/tools/user.o
+                0x0000000000008b32                vertify
+                0x0000000000008b5c                initUsers
+                0x0000000000008f32                searchUser
+                0x0000000000008f91                login
+                0x00000000000091d1                showUsers
+                0x000000000000924b                addUser
+                0x0000000000009380                delUser
+                0x00000000000094e4                updateUsers
+                0x00000000000095ea                passwd
+                0x0000000000009682                modifyPassword
+                0x000000000000980b                sudo
+ .text          0x00000000000098a5      0x2db kernel/tools/process.o
+                0x00000000000098a5                showProcess
+                0x0000000000009a3c                killpro
+                0x0000000000009aa8                pausepro
+                0x0000000000009b14                resume
+ .text          0x0000000000009b80       0x75 lib/syslog.o
+                0x0000000000009b80                syslog
+ .text          0x0000000000009bf5      0x1d6 mm/main.o
+                0x0000000000009bf5                task_mm
+                0x0000000000009d3b                alloc_mem
+                0x0000000000009dc1                free_mem
+ .text          0x0000000000009dcb      0x629 mm/forkexit.o
+                0x0000000000009dcb                do_fork
+                0x000000000000a16a                do_exit
+                0x000000000000a338                do_wait
+ .text          0x000000000000a3f4      0x392 mm/exec.o
+                0x000000000000a3f4                do_exec
+ .text          0x000000000000a786     0x1290 fs/main.o
+                0x000000000000a786                task_fs
+                0x000000000000b3b4                rw_sector
+                0x000000000000b5ee                get_super_block
+                0x000000000000b634                get_inode
+                0x000000000000b7a2                put_inode
+                0x000000000000b7e7                sync_inode
+ .text          0x000000000000ba16      0xc07 fs/open.o
+                0x000000000000ba16                do_open
+                0x000000000000bf4f                do_close
+                0x000000000000bfc6                do_lseek
+ .text          0x000000000000c61d      0x3f6 fs/misc.o
+                0x000000000000c61d                do_stat
+                0x000000000000c80e                search_file
+                0x000000000000c987                strip_path
+ .text          0x000000000000ca13      0x538 fs/read_write.o
+                0x000000000000ca13                do_rdwt
+ .text          0x000000000000cf4b      0x98d fs/link.o
+                0x000000000000cf4b                convert_to_absolute
+                0x000000000000cfe2                do_unlink
+ .text          0x000000000000d8d8     0x215a fs/disklog.o
+                0x000000000000d8d8                disklog
+                0x000000000000df1e                dump_fd_graph
+ .text          0x000000000000fa32      0x637 graphics/main.o
+                0x000000000000fa32                task_graphics
+                0x000000000000fb47                do_drawBMP
+                0x000000000000fbef                do_topBar
+                0x000000000000fc9c                do_clear
+                0x000000000000fca9                do_drawFont
+                0x000000000000fd70                do_drawPixel
+                0x000000000000fdaa                do_drawBox
+                0x000000000000fdfb                do_drawLine
+                0x000000000000ff11                do_drawCircle
+                0x0000000000010037                do_changeColorMode
+ .text          0x0000000000010069      0x682 graphics/graphics.o
+                0x0000000000010069                init_graphics
+                0x000000000001007b                init_palette
+                0x00000000000100a0                grayPalette
+                0x00000000000100c5                colorPalette
+                0x00000000000100ea                clearScreen
+                0x0000000000010126                readBMP
+                0x00000000000102f2                set_palette
+                0x0000000000010398                boxfill8
+                0x0000000000010400                updateTopbar
+                0x00000000000104b4                clearFonts
+                0x00000000000104f0                putfont8
+                0x00000000000105f7                putfonts8_char
+                0x0000000000010636                putfonts8_asc
+                0x0000000000010689                pixel
+ .text          0x00000000000106eb     0x10d4 kernel/game/2048.o
+                0x00000000000106eb                run2048
+                0x00000000000106fd                loop_game
+                0x0000000000010803                reset_game
+                0x00000000000108ba                add_rand_num
+                0x000000000001098a                get_null_count
+                0x00000000000109e0                check_game_over
+                0x0000000000010a8d                move_left
+                0x0000000000010c64                move_right
+                0x0000000000010e3b                move_up
+                0x000000000001100b                move_down
+                0x00000000000111e2                refresh_screen
+                0x00000000000117a5                init_game
+                0x00000000000117b2                release_game
+ .text          0x00000000000117bf      0x5cb kernel/tools/calendar.o
+                0x00000000000117bf                runcalendar
+                0x0000000000011828                is_leap
+                0x000000000001188c                day_count
+                0x00000000000118f9                total_day
+                0x000000000001193b                weekday
+                0x00000000000119e6                print_weekday
+                0x0000000000011b98                print_month
+                0x0000000000011cd2                print_total_day
+ .text          0x0000000000011d8a      0x84b kernel/game/tanchishe.o
+                0x000000000001229f                logic
+                0x00000000000125b4                runtanchishe
+ .text          0x00000000000125d5      0x95c kernel/tools/calculator.o
+                0x00000000000125d5                num_stack_is_empty
+                0x00000000000125e5                num_stack_push
+                0x0000000000012606                num_stack_pop
+                0x000000000001264d                num_stack_clear
+                0x0000000000012683                num_stack_get_top
+                0x00000000000126a4                op_stack_is_empty
+                0x00000000000126b4                op_stack_push
+                0x00000000000126de                op_stack_pop
+                0x0000000000012722                op_stack_get_top
+                0x0000000000012743                op_stack_clear
+                0x0000000000012776                is_digit
+                0x000000000001279c                isp
+                0x000000000001282f                icp
+                0x00000000000128c2                pow
+                0x00000000000128f3                get_two_num
+                0x000000000001295a                do_operator
+                0x0000000000012a98                run
+                0x0000000000012c80                format
+                0x0000000000012eb1                runcalculator
+ .text          0x0000000000012f31      0x814 kernel/game/pintu.o
+                0x00000000000136c3                runpintu
+ .text          0x0000000000013745     0x1431 kernel/game/chess.o
+                0x0000000000014ada                runchess
+ .text          0x0000000000014b76     0x1e54 kernel/game/pushbox.o
+                0x0000000000014b76                draw_map
+                0x0000000000014cdd                boxMenu
+                0x0000000000014d4d                runpushbox
+ .text          0x00000000000169ca      0xc2b kernel/game/smgame.o
+                0x00000000000175ce                runsmgame
+ .text          0x00000000000175f5       0xa5 kernel/game/guessnum.o
+                0x00000000000175f5                runguess
+ .text          0x000000000001769a       0xc0 lib/orangescrt.a(printf.o)
+                0x000000000001769a                printf
+                0x0000000000017719                printl
+ .text          0x000000000001775a      0x318 lib/orangescrt.a(vsprintf.o)
+                0x00000000000177bd                vsprintf
+                0x0000000000017a48                sprintf
+ *fill*         0x0000000000017a72        0xe 
+ .text          0x0000000000017a80       0x78 lib/orangescrt.a(string.o)
+                0x0000000000017a80                memcpy
+                0x0000000000017aa9                memset
+                0x0000000000017aca                strcpy
+                0x0000000000017ae2                strlen
+ .text          0x0000000000017af8      0x288 lib/orangescrt.a(misc.o)
+                0x0000000000017af8                send_recv
+                0x0000000000017bd8                memcmp
+                0x0000000000017c4e                strcmp
+                0x0000000000017cc0                strcat
+                0x0000000000017d1f                spin
+                0x0000000000017d3a                assertion_failure
+ .text          0x0000000000017d80       0x73 lib/orangescrt.a(open.o)
+                0x0000000000017d80                open
+ .text          0x0000000000017df3       0x3f lib/orangescrt.a(read.o)
+                0x0000000000017df3                read
+ .text          0x0000000000017e32       0x3f lib/orangescrt.a(write.o)
+                0x0000000000017e32                write
+ .text          0x0000000000017e71       0x33 lib/orangescrt.a(close.o)
+                0x0000000000017e71                close
+ .text          0x0000000000017ea4       0x41 lib/orangescrt.a(unlink.o)
+                0x0000000000017ea4                unlink
+ .text          0x0000000000017ee5       0x3f lib/orangescrt.a(lseek.o)
+                0x0000000000017ee5                lseek
+ .text          0x0000000000017f24       0x59 lib/orangescrt.a(getpid.o)
+                0x0000000000017f24                getpid
+ .text          0x0000000000017f7d       0x73 lib/orangescrt.a(stat.o)
+                0x0000000000017f7d                stat
+ .text          0x0000000000017ff0       0x84 lib/orangescrt.a(fork.o)
+                0x0000000000017ff0                fork
+ .text          0x0000000000018074       0x44 lib/orangescrt.a(wait.o)
+                0x0000000000018074                wait
+ .text          0x00000000000180b8      0x263 lib/orangescrt.a(exec.o)
+                0x00000000000180b8                exec
+                0x0000000000018133                execl
+                0x0000000000018159                execv
+ .text          0x000000000001831b      0x288 lib/orangescrt.a(graphics.o)
+                0x000000000001831b                drawBMP
+                0x000000000001835c                topBar
+                0x000000000001839d                clearAll
+                0x00000000000183c7                changeColorMode
+                0x00000000000183f1                drawFont
+                0x0000000000018448                drawPixel
+                0x000000000001848e                drawBox
+                0x00000000000184dd                drawLine
+                0x000000000001852c                drawCircle
+                0x0000000000018575                clear
+ .text          0x00000000000185a3       0x34 lib/orangescrt.a(kbhit.o)
+                0x00000000000185a3                kbhit
+ *fill*         0x00000000000185d7        0x9 
+ .text          0x00000000000185e0       0x28 lib/orangescrt.a(syscall.o)
+                0x00000000000185e0                sendrec
+                0x00000000000185fa                printx
  *(.gnu.warning)
 
 .fini
  *(SORT(.fini))
-                0x0000000000014608                PROVIDE (__etext, .)
-                0x0000000000014608                PROVIDE (_etext, .)
-                0x0000000000014608                PROVIDE (etext, .)
+                0x0000000000018608                PROVIDE (__etext, .)
+                0x0000000000018608                PROVIDE (_etext, .)
+                0x0000000000018608                PROVIDE (etext, .)
 
-.rodata         0x0000000000014620     0x36d1
+.rodata         0x0000000000018620     0x3ee5
  *(.rodata .rodata.* .gnu.linkonce.r.*)
- .rodata        0x0000000000014620       0x47 kernel/start.o
- *fill*         0x0000000000014667       0x19 
- .rodata        0x0000000000014680      0x460 kernel/main.o
- .rodata        0x0000000000014ae0       0x64 kernel/keyboard.o
- .rodata        0x0000000000014b44      0x184 kernel/tty.o
- .rodata        0x0000000000014cc8       0x5b kernel/console.o
- .rodata        0x0000000000014d23       0x11 kernel/i8259.o
- .rodata        0x0000000000014d34       0x10 kernel/global.o
-                0x0000000000014d34                FSBUF_SIZE
-                0x0000000000014d38                MMBUF_SIZE
-                0x0000000000014d3c                LOGBUF_SIZE
-                0x0000000000014d40                LOGDISKBUF_SIZE
- *fill*         0x0000000000014d44       0x1c 
- .rodata        0x0000000000014d60      0x580 kernel/protect.o
- .rodata        0x00000000000152e0      0x5da kernel/proc.o
- .rodata        0x00000000000158ba       0x11 kernel/systask.o
- *fill*         0x00000000000158cb        0x1 
- .rodata        0x00000000000158cc      0x15c kernel/hd.o
- .rodata        0x0000000000015a28       0x6a kernel/klib.o
- .rodata        0x0000000000015a92        0xb kernel/tools/welcome.o
- *fill*         0x0000000000015a9d        0x3 
- .rodata        0x0000000000015aa0       0xa5 kernel/tools/fs.o
- *fill*         0x0000000000015b45        0x3 
- .rodata        0x0000000000015b48      0x1ec kernel/tools/user.o
- .rodata        0x0000000000015d34       0xb4 kernel/tools/process.o
- .rodata        0x0000000000015de8       0x1e lib/syslog.o
- *fill*         0x0000000000015e06        0x2 
- .rodata        0x0000000000015e08       0xb1 mm/main.o
- *fill*         0x0000000000015eb9        0x3 
- .rodata        0x0000000000015ebc       0xe7 mm/forkexit.o
- *fill*         0x0000000000015fa3        0x1 
- .rodata        0x0000000000015fa4       0xa4 mm/exec.o
- .rodata        0x0000000000016048      0x2be fs/main.o
- *fill*         0x0000000000016306        0x2 
- .rodata        0x0000000000016308      0x198 fs/open.o
- .rodata        0x00000000000164a0       0x60 fs/misc.o
- .rodata        0x0000000000016500      0x164 fs/read_write.o
- .rodata        0x0000000000016664      0x1ad fs/link.o
- *fill*         0x0000000000016811        0x3 
- .rodata        0x0000000000016814      0x806 fs/disklog.o
- *fill*         0x000000000001701a        0x2 
- .rodata        0x000000000001701c       0x97 graphics/main.o
- .rodata        0x00000000000170b3       0x11 graphics/graphics.o
- .rodata        0x00000000000170c4       0xd3 kernel/game/2048.o
- *fill*         0x0000000000017197        0x1 
- .rodata        0x0000000000017198      0x210 kernel/tools/calendar.o
- .rodata        0x00000000000173a8      0x1f5 kernel/game/tanchishe.o
- *fill*         0x000000000001759d        0x3 
- .rodata        0x00000000000175a0      0x429 kernel/tools/calculator.o
- *fill*         0x00000000000179c9        0x3 
- .rodata        0x00000000000179cc      0x13a kernel/game/pingtu.o
- .rodata        0x0000000000017b06       0x14 lib/orangescrt.a(printf.o)
- *fill*         0x0000000000017b1a        0x2 
- .rodata        0x0000000000017b1c       0xad lib/orangescrt.a(misc.o)
- .rodata        0x0000000000017bc9       0x23 lib/orangescrt.a(open.o)
- .rodata        0x0000000000017bec       0x25 lib/orangescrt.a(getpid.o)
- .rodata        0x0000000000017c11       0x23 lib/orangescrt.a(stat.o)
- .rodata        0x0000000000017c34       0x33 lib/orangescrt.a(fork.o)
- *fill*         0x0000000000017c67        0x1 
- .rodata        0x0000000000017c68       0x87 lib/orangescrt.a(exec.o)
- .rodata        0x0000000000017cef        0x2 lib/orangescrt.a(graphics.o)
+ .rodata        0x0000000000018620       0x47 kernel/start.o
+ *fill*         0x0000000000018667       0x19 
+ .rodata        0x0000000000018680      0x490 kernel/main.o
+ .rodata        0x0000000000018b10       0x64 kernel/keyboard.o
+ *fill*         0x0000000000018b74        0xc 
+ .rodata        0x0000000000018b80      0x298 kernel/tty.o
+ .rodata        0x0000000000018e18       0x5b kernel/console.o
+ .rodata        0x0000000000018e73       0x11 kernel/i8259.o
+ .rodata        0x0000000000018e84       0x10 kernel/global.o
+                0x0000000000018e84                FSBUF_SIZE
+                0x0000000000018e88                MMBUF_SIZE
+                0x0000000000018e8c                LOGBUF_SIZE
+                0x0000000000018e90                LOGDISKBUF_SIZE
+ *fill*         0x0000000000018e94        0xc 
+ .rodata        0x0000000000018ea0      0x580 kernel/protect.o
+ .rodata        0x0000000000019420      0x5da kernel/proc.o
+ .rodata        0x00000000000199fa       0x11 kernel/systask.o
+ *fill*         0x0000000000019a0b        0x1 
+ .rodata        0x0000000000019a0c      0x15c kernel/hd.o
+ .rodata        0x0000000000019b68       0x6a kernel/klib.o
+ .rodata        0x0000000000019bd2        0xb kernel/tools/welcome.o
+ *fill*         0x0000000000019bdd        0x3 
+ .rodata        0x0000000000019be0       0xa5 kernel/tools/fs.o
+ *fill*         0x0000000000019c85        0x3 
+ .rodata        0x0000000000019c88      0x1ec kernel/tools/user.o
+ .rodata        0x0000000000019e74       0xb4 kernel/tools/process.o
+ .rodata        0x0000000000019f28       0x1e lib/syslog.o
+ *fill*         0x0000000000019f46        0x2 
+ .rodata        0x0000000000019f48       0xb1 mm/main.o
+ *fill*         0x0000000000019ff9        0x3 
+ .rodata        0x0000000000019ffc       0xe7 mm/forkexit.o
+ *fill*         0x000000000001a0e3        0x1 
+ .rodata        0x000000000001a0e4       0xa4 mm/exec.o
+ .rodata        0x000000000001a188      0x2be fs/main.o
+ *fill*         0x000000000001a446        0x2 
+ .rodata        0x000000000001a448      0x198 fs/open.o
+ .rodata        0x000000000001a5e0       0x60 fs/misc.o
+ .rodata        0x000000000001a640      0x164 fs/read_write.o
+ .rodata        0x000000000001a7a4      0x1ad fs/link.o
+ *fill*         0x000000000001a951        0x3 
+ .rodata        0x000000000001a954      0x806 fs/disklog.o
+ *fill*         0x000000000001b15a        0x2 
+ .rodata        0x000000000001b15c       0x97 graphics/main.o
+ .rodata        0x000000000001b1f3       0x11 graphics/graphics.o
+ .rodata        0x000000000001b204       0xd3 kernel/game/2048.o
+ *fill*         0x000000000001b2d7        0x1 
+ .rodata        0x000000000001b2d8      0x210 kernel/tools/calendar.o
+ .rodata        0x000000000001b4e8      0x1f5 kernel/game/tanchishe.o
+ *fill*         0x000000000001b6dd        0x3 
+ .rodata        0x000000000001b6e0      0x429 kernel/tools/calculator.o
+ *fill*         0x000000000001bb09        0x3 
+ .rodata        0x000000000001bb0c      0x13a kernel/game/pintu.o
+ *fill*         0x000000000001bc46       0x1a 
+ .rodata        0x000000000001bc60      0x27e kernel/game/chess.o
+ *fill*         0x000000000001bede        0x2 
+ .rodata        0x000000000001bee0      0x2e8 kernel/game/pushbox.o
+ .rodata        0x000000000001c1c8       0xd7 kernel/game/smgame.o
+ *fill*         0x000000000001c29f        0x1 
+ .rodata        0x000000000001c2a0       0x7b kernel/game/guessnum.o
+ .rodata        0x000000000001c31b       0x14 lib/orangescrt.a(printf.o)
+ *fill*         0x000000000001c32f        0x1 
+ .rodata        0x000000000001c330       0xad lib/orangescrt.a(misc.o)
+ .rodata        0x000000000001c3dd       0x23 lib/orangescrt.a(open.o)
+ .rodata        0x000000000001c400       0x25 lib/orangescrt.a(getpid.o)
+ .rodata        0x000000000001c425       0x23 lib/orangescrt.a(stat.o)
+ .rodata        0x000000000001c448       0x33 lib/orangescrt.a(fork.o)
+ *fill*         0x000000000001c47b        0x1 
+ .rodata        0x000000000001c47c       0x87 lib/orangescrt.a(exec.o)
+ .rodata        0x000000000001c503        0x2 lib/orangescrt.a(graphics.o)
 
 .rodata1
  *(.rodata1)
@@ -681,104 +731,112 @@ LOAD lib/orangescrt.a
 .eh_frame_hdr
  *(.eh_frame_hdr)
 
-.eh_frame       0x0000000000017cf4     0x23e4
+.eh_frame       0x000000000001c508     0x272c
  *(.eh_frame)
- .eh_frame      0x0000000000017cf4       0x38 kernel/start.o
- .eh_frame      0x0000000000017d2c      0x134 kernel/main.o
+ .eh_frame      0x000000000001c508       0x38 kernel/start.o
+ .eh_frame      0x000000000001c540      0x134 kernel/main.o
                                         0x14c (松开之前的大小)
- .eh_frame      0x0000000000017e60       0xc0 kernel/clock.o
+ .eh_frame      0x000000000001c674       0xc0 kernel/clock.o
                                          0xd8 (松开之前的大小)
- .eh_frame      0x0000000000017f20       0xe0 kernel/keyboard.o
+ .eh_frame      0x000000000001c734       0xe0 kernel/keyboard.o
                                          0xf8 (松开之前的大小)
- .eh_frame      0x0000000000018000      0x1bc kernel/tty.o
-                                        0x1d4 (松开之前的大小)
- .eh_frame      0x00000000000181bc      0x160 kernel/console.o
+ .eh_frame      0x000000000001c814      0x1c8 kernel/tty.o
+                                        0x1e0 (松开之前的大小)
+ .eh_frame      0x000000000001c9dc      0x160 kernel/console.o
                                         0x178 (松开之前的大小)
- .eh_frame      0x000000000001831c       0x60 kernel/i8259.o
+ .eh_frame      0x000000000001cb3c       0x60 kernel/i8259.o
                                          0x78 (松开之前的大小)
- .eh_frame      0x000000000001837c       0xb0 kernel/protect.o
+ .eh_frame      0x000000000001cb9c       0xb0 kernel/protect.o
                                          0xc8 (松开之前的大小)
- .eh_frame      0x000000000001842c      0x1c0 kernel/proc.o
+ .eh_frame      0x000000000001cc4c      0x1c0 kernel/proc.o
                                         0x1d8 (松开之前的大小)
- .eh_frame      0x00000000000185ec       0x5c kernel/systask.o
+ .eh_frame      0x000000000001ce0c       0x5c kernel/systask.o
                                          0x74 (松开之前的大小)
- .eh_frame      0x0000000000018648      0x1e8 kernel/hd.o
+ .eh_frame      0x000000000001ce68      0x1e8 kernel/hd.o
                                         0x200 (松开之前的大小)
- .eh_frame      0x0000000000018830      0x120 kernel/klib.o
+ .eh_frame      0x000000000001d050      0x120 kernel/klib.o
                                         0x138 (松开之前的大小)
- .eh_frame      0x0000000000018950       0x20 kernel/tools/welcome.o
+ .eh_frame      0x000000000001d170       0x20 kernel/tools/welcome.o
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000018970      0x1b8 kernel/tools/fs.o
+ .eh_frame      0x000000000001d190      0x1b8 kernel/tools/fs.o
                                         0x1d0 (松开之前的大小)
- .eh_frame      0x0000000000018b28      0x16c kernel/tools/user.o
+ .eh_frame      0x000000000001d348      0x16c kernel/tools/user.o
                                         0x184 (松开之前的大小)
- .eh_frame      0x0000000000018c94       0x80 kernel/tools/process.o
+ .eh_frame      0x000000000001d4b4       0x80 kernel/tools/process.o
                                          0x98 (松开之前的大小)
- .eh_frame      0x0000000000018d14       0x20 lib/syslog.o
+ .eh_frame      0x000000000001d534       0x20 lib/syslog.o
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000018d34       0x7c mm/main.o
+ .eh_frame      0x000000000001d554       0x7c mm/main.o
                                          0x94 (松开之前的大小)
- .eh_frame      0x0000000000018db0       0x90 mm/forkexit.o
+ .eh_frame      0x000000000001d5d0       0x90 mm/forkexit.o
                                          0xa8 (松开之前的大小)
- .eh_frame      0x0000000000018e40       0x2c mm/exec.o
+ .eh_frame      0x000000000001d660       0x2c mm/exec.o
                                          0x44 (松开之前的大小)
- .eh_frame      0x0000000000018e6c      0x174 fs/main.o
+ .eh_frame      0x000000000001d68c      0x174 fs/main.o
                                         0x18c (松开之前的大小)
- .eh_frame      0x0000000000018fe0      0x128 fs/open.o
+ .eh_frame      0x000000000001d800      0x128 fs/open.o
                                         0x140 (松开之前的大小)
- .eh_frame      0x0000000000019108       0x70 fs/misc.o
+ .eh_frame      0x000000000001d928       0x70 fs/misc.o
                                          0x88 (松开之前的大小)
- .eh_frame      0x0000000000019178       0x2c fs/read_write.o
+ .eh_frame      0x000000000001d998       0x2c fs/read_write.o
                                          0x44 (松开之前的大小)
- .eh_frame      0x00000000000191a4       0x4c fs/link.o
+ .eh_frame      0x000000000001d9c4       0x4c fs/link.o
                                          0x64 (松开之前的大小)
- .eh_frame      0x00000000000191f0       0x60 fs/disklog.o
+ .eh_frame      0x000000000001da10       0x60 fs/disklog.o
                                          0x78 (松开之前的大小)
- .eh_frame      0x0000000000019250      0x158 graphics/main.o
+ .eh_frame      0x000000000001da70      0x158 graphics/main.o
                                         0x170 (松开之前的大小)
- .eh_frame      0x00000000000193a8      0x1c0 graphics/graphics.o
+ .eh_frame      0x000000000001dbc8      0x1c0 graphics/graphics.o
                                         0x1d8 (松开之前的大小)
- .eh_frame      0x0000000000019568      0x1b0 kernel/game/2048.o
+ .eh_frame      0x000000000001dd88      0x1b0 kernel/game/2048.o
                                         0x1c8 (松开之前的大小)
- .eh_frame      0x0000000000019718      0x104 kernel/tools/calendar.o
+ .eh_frame      0x000000000001df38      0x104 kernel/tools/calendar.o
                                         0x11c (松开之前的大小)
- .eh_frame      0x000000000001981c       0xf0 kernel/game/tanchishe.o
+ .eh_frame      0x000000000001e03c       0xf0 kernel/game/tanchishe.o
                                         0x108 (松开之前的大小)
- .eh_frame      0x000000000001990c      0x26c kernel/tools/calculator.o
+ .eh_frame      0x000000000001e12c      0x26c kernel/tools/calculator.o
                                         0x284 (松开之前的大小)
- .eh_frame      0x0000000000019b78       0xfc kernel/game/pingtu.o
+ .eh_frame      0x000000000001e398       0xfc kernel/game/pintu.o
                                         0x114 (松开之前的大小)
- .eh_frame      0x0000000000019c74       0x40 lib/orangescrt.a(printf.o)
+ .eh_frame      0x000000000001e494      0x130 kernel/game/chess.o
+                                        0x148 (松开之前的大小)
+ .eh_frame      0x000000000001e5c4       0x80 kernel/game/pushbox.o
+                                         0x98 (松开之前的大小)
+ .eh_frame      0x000000000001e644      0x16c kernel/game/smgame.o
+                                        0x184 (松开之前的大小)
+ .eh_frame      0x000000000001e7b0       0x20 kernel/game/guessnum.o
+                                         0x38 (松开之前的大小)
+ .eh_frame      0x000000000001e7d0       0x40 lib/orangescrt.a(printf.o)
                                          0x58 (松开之前的大小)
- .eh_frame      0x0000000000019cb4       0x68 lib/orangescrt.a(vsprintf.o)
+ .eh_frame      0x000000000001e810       0x68 lib/orangescrt.a(vsprintf.o)
                                          0x80 (松开之前的大小)
- .eh_frame      0x0000000000019d1c       0xbc lib/orangescrt.a(misc.o)
+ .eh_frame      0x000000000001e878       0xbc lib/orangescrt.a(misc.o)
                                          0xd4 (松开之前的大小)
- .eh_frame      0x0000000000019dd8       0x20 lib/orangescrt.a(open.o)
+ .eh_frame      0x000000000001e934       0x20 lib/orangescrt.a(open.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019df8       0x20 lib/orangescrt.a(read.o)
+ .eh_frame      0x000000000001e954       0x20 lib/orangescrt.a(read.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019e18       0x20 lib/orangescrt.a(write.o)
+ .eh_frame      0x000000000001e974       0x20 lib/orangescrt.a(write.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019e38       0x20 lib/orangescrt.a(close.o)
+ .eh_frame      0x000000000001e994       0x20 lib/orangescrt.a(close.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019e58       0x20 lib/orangescrt.a(unlink.o)
+ .eh_frame      0x000000000001e9b4       0x20 lib/orangescrt.a(unlink.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019e78       0x20 lib/orangescrt.a(lseek.o)
+ .eh_frame      0x000000000001e9d4       0x20 lib/orangescrt.a(lseek.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019e98       0x20 lib/orangescrt.a(getpid.o)
+ .eh_frame      0x000000000001e9f4       0x20 lib/orangescrt.a(getpid.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019eb8       0x20 lib/orangescrt.a(stat.o)
+ .eh_frame      0x000000000001ea14       0x20 lib/orangescrt.a(stat.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019ed8       0x20 lib/orangescrt.a(fork.o)
+ .eh_frame      0x000000000001ea34       0x20 lib/orangescrt.a(fork.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019ef8       0x20 lib/orangescrt.a(wait.o)
+ .eh_frame      0x000000000001ea54       0x20 lib/orangescrt.a(wait.o)
                                          0x38 (松开之前的大小)
- .eh_frame      0x0000000000019f18       0x60 lib/orangescrt.a(exec.o)
+ .eh_frame      0x000000000001ea74       0x60 lib/orangescrt.a(exec.o)
                                          0x78 (松开之前的大小)
- .eh_frame      0x0000000000019f78      0x140 lib/orangescrt.a(graphics.o)
+ .eh_frame      0x000000000001ead4      0x140 lib/orangescrt.a(graphics.o)
                                         0x158 (松开之前的大小)
- .eh_frame      0x000000000001a0b8       0x20 lib/orangescrt.a(kbhit.o)
+ .eh_frame      0x000000000001ec14       0x20 lib/orangescrt.a(kbhit.o)
                                          0x38 (松开之前的大小)
 
 .gcc_except_table
@@ -786,8 +844,8 @@ LOAD lib/orangescrt.a
 
 .exception_ranges
  *(.exception_ranges .exception_ranges*)
-                0x000000000001a0d8                . = (ALIGN (0x1000) - ((0x1000 - .) & 0xfff))
-                0x000000000001b0d8                . = DATA_SEGMENT_ALIGN (0x1000, 0x1000)
+                0x000000000001ec34                . = (ALIGN (0x1000) - ((0x1000 - .) & 0xfff))
+                0x000000000001f000                . = DATA_SEGMENT_ALIGN (0x1000, 0x1000)
 
 .eh_frame
  *(.eh_frame)
@@ -805,22 +863,22 @@ LOAD lib/orangescrt.a
  *(.tbss .tbss.* .gnu.linkonce.tb.*)
  *(.tcommon)
 
-.preinit_array  0x000000000001b0d8        0x0
-                0x000000000001b0d8                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x000000000001f000        0x0
+                0x000000000001f000                PROVIDE (__preinit_array_start, .)
  *(.preinit_array)
-                0x000000000001b0d8                PROVIDE (__preinit_array_end, .)
+                0x000000000001f000                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x000000000001b0d8        0x0
-                0x000000000001b0d8                PROVIDE (__init_array_start, .)
+.init_array     0x000000000001f000        0x0
+                0x000000000001f000                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*) SORT(.ctors.*))
  *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
-                0x000000000001b0d8                PROVIDE (__init_array_end, .)
+                0x000000000001f000                PROVIDE (__init_array_end, .)
 
-.fini_array     0x000000000001b0d8        0x0
-                0x000000000001b0d8                PROVIDE (__fini_array_start, .)
+.fini_array     0x000000000001f000        0x0
+                0x000000000001f000                PROVIDE (__fini_array_start, .)
  *(SORT(.fini_array.*) SORT(.dtors.*))
  *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
-                0x000000000001b0d8                PROVIDE (__fini_array_end, .)
+                0x000000000001f000                PROVIDE (__fini_array_end, .)
 
 .ctors
  *crtbegin.o(.ctors)
@@ -849,214 +907,258 @@ LOAD lib/orangescrt.a
 .got
  *(.got)
  *(.igot)
-                0x000000000001b0d8                . = DATA_SEGMENT_RELRO_END (., (SIZEOF (.got.plt) >= 0xc)?0xc:0x0)
+                0x000000000001f000                . = DATA_SEGMENT_RELRO_END (., (SIZEOF (.got.plt) >= 0xc)?0xc:0x0)
 
-.got.plt        0x000000000001b0d8        0x0
+.got.plt        0x000000000001f000        0x0
  *(.got.plt)
  *(.igot.plt)
  .igot.plt      0x0000000000000000        0x0 kernel/kernel.o
 
-.data           0x000000000001b0e0     0x11f4
+.data           0x000000000001f000     0x1214
  *(.data .data.* .gnu.linkonce.d.*)
- .data          0x000000000001b0e0        0x2 kernel/kernel.o
- .data          0x000000000001b0e2        0x0 kernel/start.o
- .data          0x000000000001b0e2        0x0 kernel/main.o
- *fill*         0x000000000001b0e2        0x2 
- .data          0x000000000001b0e4        0x4 kernel/clock.o
-                0x000000000001b0e4                randSeed
- *fill*         0x000000000001b0e8       0x18 
- .data          0x000000000001b100      0x600 kernel/keyboard.o
-                0x000000000001b100                keymap
- .data          0x000000000001b700       0x22 kernel/tty.o
- .data          0x000000000001b722        0x0 kernel/console.o
- .data          0x000000000001b722        0x0 kernel/i8259.o
- *fill*         0x000000000001b722       0x1e 
- .data          0x000000000001b740      0x1d4 kernel/global.o
-                0x000000000001b740                task_table
-                0x000000000001b840                user_proc_table
-                0x000000000001b8e0                sys_call_table
-                0x000000000001b8ec                dd_map
-                0x000000000001b904                fsbuf
-                0x000000000001b908                mmbuf
-                0x000000000001b90c                logbuf
-                0x000000000001b910                logdiskbuf
- .data          0x000000000001b914        0x0 kernel/protect.o
- .data          0x000000000001b914        0x0 kernel/proc.o
- .data          0x000000000001b914        0x0 kernel/systask.o
- .data          0x000000000001b914        0x0 kernel/hd.o
- .data          0x000000000001b914        0x0 kernel/klib.o
- .data          0x000000000001b914        0x0 kernel/tools/welcome.o
- *fill*         0x000000000001b914        0xc 
- .data          0x000000000001b920       0x80 kernel/tools/fs.o
-                0x000000000001b920                currentFolder
- .data          0x000000000001b9a0       0x84 kernel/tools/user.o
-                0x000000000001b9a0                currentUser
-                0x000000000001ba20                currentUserIndex
- .data          0x000000000001ba24        0x0 kernel/tools/process.o
- .data          0x000000000001ba24        0x0 lib/syslog.o
- .data          0x000000000001ba24        0x0 mm/main.o
- .data          0x000000000001ba24        0x0 mm/forkexit.o
- .data          0x000000000001ba24        0x0 mm/exec.o
- .data          0x000000000001ba24        0x0 fs/main.o
- .data          0x000000000001ba24        0x0 fs/open.o
- .data          0x000000000001ba24        0x0 fs/misc.o
- .data          0x000000000001ba24        0x0 fs/read_write.o
- .data          0x000000000001ba24        0x0 fs/link.o
- .data          0x000000000001ba24        0x0 fs/disklog.o
- .data          0x000000000001ba24        0x0 graphics/main.o
- *fill*         0x000000000001ba24       0x1c 
- .data          0x000000000001ba40      0x874 graphics/graphics.o
-                0x000000000001ba40                hankaku
-                0x000000000001c240                table_rgb
-                0x000000000001c280                table_gray
-                0x000000000001c2b0                colorMode
- .data          0x000000000001c2b4        0x8 kernel/game/2048.o
- .data          0x000000000001c2bc        0x0 kernel/tools/calendar.o
- .data          0x000000000001c2bc        0x4 kernel/game/tanchishe.o
- .data          0x000000000001c2c0        0xc kernel/tools/calculator.o
-                0x000000000001c2c0                flag
-                0x000000000001c2c4                num_stack_top
-                0x000000000001c2c8                op_stack_top
- .data          0x000000000001c2cc        0x8 kernel/game/pingtu.o
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(printf.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(vsprintf.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(misc.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(open.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(read.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(write.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(close.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(unlink.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(lseek.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(getpid.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(stat.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(fork.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(wait.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(exec.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(graphics.o)
- .data          0x000000000001c2d4        0x0 lib/orangescrt.a(kbhit.o)
+ .data          0x000000000001f000        0x2 kernel/kernel.o
+ .data          0x000000000001f002        0x0 kernel/start.o
+ .data          0x000000000001f002        0x0 kernel/main.o
+ *fill*         0x000000000001f002        0x2 
+ .data          0x000000000001f004        0x4 kernel/clock.o
+                0x000000000001f004                randSeed
+ *fill*         0x000000000001f008       0x18 
+ .data          0x000000000001f020      0x600 kernel/keyboard.o
+                0x000000000001f020                keymap
+ .data          0x000000000001f620       0x22 kernel/tty.o
+ .data          0x000000000001f642        0x0 kernel/console.o
+ .data          0x000000000001f642        0x0 kernel/i8259.o
+ *fill*         0x000000000001f642       0x1e 
+ .data          0x000000000001f660      0x1d4 kernel/global.o
+                0x000000000001f660                task_table
+                0x000000000001f760                user_proc_table
+                0x000000000001f800                sys_call_table
+                0x000000000001f80c                dd_map
+                0x000000000001f824                fsbuf
+                0x000000000001f828                mmbuf
+                0x000000000001f82c                logbuf
+                0x000000000001f830                logdiskbuf
+ .data          0x000000000001f834        0x0 kernel/protect.o
+ .data          0x000000000001f834        0x0 kernel/proc.o
+ .data          0x000000000001f834        0x0 kernel/systask.o
+ .data          0x000000000001f834        0x0 kernel/hd.o
+ .data          0x000000000001f834        0x0 kernel/klib.o
+ .data          0x000000000001f834        0x0 kernel/tools/welcome.o
+ *fill*         0x000000000001f834        0xc 
+ .data          0x000000000001f840       0x80 kernel/tools/fs.o
+                0x000000000001f840                currentFolder
+ .data          0x000000000001f8c0       0x84 kernel/tools/user.o
+                0x000000000001f8c0                currentUser
+                0x000000000001f940                currentUserIndex
+ .data          0x000000000001f944        0x0 kernel/tools/process.o
+ .data          0x000000000001f944        0x0 lib/syslog.o
+ .data          0x000000000001f944        0x0 mm/main.o
+ .data          0x000000000001f944        0x0 mm/forkexit.o
+ .data          0x000000000001f944        0x0 mm/exec.o
+ .data          0x000000000001f944        0x0 fs/main.o
+ .data          0x000000000001f944        0x0 fs/open.o
+ .data          0x000000000001f944        0x0 fs/misc.o
+ .data          0x000000000001f944        0x0 fs/read_write.o
+ .data          0x000000000001f944        0x0 fs/link.o
+ .data          0x000000000001f944        0x0 fs/disklog.o
+ .data          0x000000000001f944        0x0 graphics/main.o
+ *fill*         0x000000000001f944       0x1c 
+ .data          0x000000000001f960      0x874 graphics/graphics.o
+                0x000000000001f960                hankaku
+                0x0000000000020160                table_rgb
+                0x00000000000201a0                table_gray
+                0x00000000000201d0                colorMode
+ .data          0x00000000000201d4        0x8 kernel/game/2048.o
+ .data          0x00000000000201dc        0x0 kernel/tools/calendar.o
+ .data          0x00000000000201dc        0x4 kernel/game/tanchishe.o
+ .data          0x00000000000201e0        0xc kernel/tools/calculator.o
+                0x00000000000201e0                flag
+                0x00000000000201e4                num_stack_top
+                0x00000000000201e8                op_stack_top
+ .data          0x00000000000201ec        0x8 kernel/game/pintu.o
+ .data          0x00000000000201f4       0x10 kernel/game/chess.o
+                0x00000000000201f4                state
+ .data          0x0000000000020204        0x8 kernel/game/pushbox.o
+ .data          0x000000000002020c        0x8 kernel/game/smgame.o
+ .data          0x0000000000020214        0x0 kernel/game/guessnum.o
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(printf.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(vsprintf.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(misc.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(open.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(read.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(write.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(close.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(unlink.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(lseek.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(getpid.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(stat.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(fork.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(wait.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(exec.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(graphics.o)
+ .data          0x0000000000020214        0x0 lib/orangescrt.a(kbhit.o)
 
 .data1
  *(.data1)
-                0x000000000001c2d4                _edata = .
-                0x000000000001c2d4                PROVIDE (edata, .)
-                0x000000000001c2d4                . = .
-                0x000000000001c2d4                __bss_start = .
+                0x0000000000020214                _edata = .
+                0x0000000000020214                PROVIDE (edata, .)
+                0x0000000000020214                . = .
+                0x0000000000020214                __bss_start = .
 
-.bss            0x000000000001c2e0    0x2fbd8
+.bss            0x0000000000020220    0x32500
  *(.dynbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x000000000001c2e0      0x800 kernel/kernel.o
- .bss           0x000000000001cae0        0x0 kernel/start.o
- .bss           0x000000000001cae0        0x0 kernel/main.o
- .bss           0x000000000001cae0        0x0 kernel/clock.o
- .bss           0x000000000001cae0       0x58 kernel/keyboard.o
- .bss           0x000000000001cb38        0x0 kernel/tty.o
- .bss           0x000000000001cb38        0x0 kernel/console.o
- .bss           0x000000000001cb38        0x0 kernel/i8259.o
- .bss           0x000000000001cb38        0x0 kernel/global.o
- .bss           0x000000000001cb38        0x0 kernel/protect.o
- .bss           0x000000000001cb38        0x0 kernel/proc.o
- .bss           0x000000000001cb38        0x0 kernel/systask.o
- *fill*         0x000000000001cb38        0x8 
- .bss           0x000000000001cb40      0x64c kernel/hd.o
- .bss           0x000000000001d18c        0x0 kernel/klib.o
- .bss           0x000000000001d18c        0x0 kernel/tools/welcome.o
- *fill*         0x000000000001d18c       0x14 
- .bss           0x000000000001d1a0       0x84 kernel/tools/fs.o
-                0x000000000001d1a0                filepath
-                0x000000000001d220                fileCount
- .bss           0x000000000001d224        0x4 kernel/tools/user.o
-                0x000000000001d224                usercount
- .bss           0x000000000001d228        0x0 kernel/tools/process.o
- .bss           0x000000000001d228        0x0 lib/syslog.o
- .bss           0x000000000001d228        0x0 mm/main.o
- .bss           0x000000000001d228        0x0 mm/forkexit.o
- .bss           0x000000000001d228        0x0 mm/exec.o
- .bss           0x000000000001d228        0x0 fs/main.o
- .bss           0x000000000001d228        0x0 fs/open.o
- .bss           0x000000000001d228        0x0 fs/misc.o
- .bss           0x000000000001d228        0x0 fs/read_write.o
- .bss           0x000000000001d228        0x0 fs/link.o
- *fill*         0x000000000001d228       0x18 
- .bss           0x000000000001d240      0x208 fs/disklog.o
- .bss           0x000000000001d448        0x0 graphics/main.o
- .bss           0x000000000001d448        0x0 graphics/graphics.o
- *fill*         0x000000000001d448       0x18 
- .bss           0x000000000001d460       0x54 kernel/game/2048.o
- .bss           0x000000000001d4b4        0x0 kernel/tools/calendar.o
- *fill*         0x000000000001d4b4        0xc 
- .bss           0x000000000001d4c0      0x660 kernel/game/tanchishe.o
- .bss           0x000000000001db20      0x5a8 kernel/tools/calculator.o
-                0x000000000001db20                str
-                0x000000000001dcc0                num_stack
-                0x000000000001dfe0                left
-                0x000000000001dfe4                right
-                0x000000000001e000                op_stack
- .bss           0x000000000001e0c8        0x0 kernel/game/pingtu.o
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(printf.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(vsprintf.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(misc.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(open.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(read.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(write.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(close.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(unlink.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(lseek.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(getpid.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(stat.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(fork.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(wait.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(exec.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(graphics.o)
- .bss           0x000000000001e0c8        0x0 lib/orangescrt.a(kbhit.o)
+ .bss           0x0000000000020220      0x800 kernel/kernel.o
+ .bss           0x0000000000020a20        0x0 kernel/start.o
+ .bss           0x0000000000020a20        0x0 kernel/main.o
+ .bss           0x0000000000020a20        0x0 kernel/clock.o
+ .bss           0x0000000000020a20       0x58 kernel/keyboard.o
+ .bss           0x0000000000020a78        0x0 kernel/tty.o
+ .bss           0x0000000000020a78        0x0 kernel/console.o
+ .bss           0x0000000000020a78        0x0 kernel/i8259.o
+ .bss           0x0000000000020a78        0x0 kernel/global.o
+ .bss           0x0000000000020a78        0x0 kernel/protect.o
+ .bss           0x0000000000020a78        0x0 kernel/proc.o
+ .bss           0x0000000000020a78        0x0 kernel/systask.o
+ *fill*         0x0000000000020a78        0x8 
+ .bss           0x0000000000020a80      0x64c kernel/hd.o
+ .bss           0x00000000000210cc        0x0 kernel/klib.o
+ .bss           0x00000000000210cc        0x0 kernel/tools/welcome.o
+ *fill*         0x00000000000210cc       0x14 
+ .bss           0x00000000000210e0       0x84 kernel/tools/fs.o
+                0x00000000000210e0                filepath
+                0x0000000000021160                fileCount
+ .bss           0x0000000000021164        0x4 kernel/tools/user.o
+                0x0000000000021164                usercount
+ .bss           0x0000000000021168        0x0 kernel/tools/process.o
+ .bss           0x0000000000021168        0x0 lib/syslog.o
+ .bss           0x0000000000021168        0x0 mm/main.o
+ .bss           0x0000000000021168        0x0 mm/forkexit.o
+ .bss           0x0000000000021168        0x0 mm/exec.o
+ .bss           0x0000000000021168        0x0 fs/main.o
+ .bss           0x0000000000021168        0x0 fs/open.o
+ .bss           0x0000000000021168        0x0 fs/misc.o
+ .bss           0x0000000000021168        0x0 fs/read_write.o
+ .bss           0x0000000000021168        0x0 fs/link.o
+ *fill*         0x0000000000021168       0x18 
+ .bss           0x0000000000021180      0x208 fs/disklog.o
+ .bss           0x0000000000021388        0x0 graphics/main.o
+ .bss           0x0000000000021388        0x0 graphics/graphics.o
+ *fill*         0x0000000000021388       0x18 
+ .bss           0x00000000000213a0       0x54 kernel/game/2048.o
+ .bss           0x00000000000213f4        0x0 kernel/tools/calendar.o
+ *fill*         0x00000000000213f4        0xc 
+ .bss           0x0000000000021400      0x660 kernel/game/tanchishe.o
+ .bss           0x0000000000021a60      0x5a8 kernel/tools/calculator.o
+                0x0000000000021a60                str
+                0x0000000000021c00                num_stack
+                0x0000000000021f20                left
+                0x0000000000021f24                right
+                0x0000000000021f40                op_stack
+ .bss           0x0000000000022008        0x0 kernel/game/pintu.o
+ .bss           0x0000000000022008       0x10 kernel/game/chess.o
+                0x0000000000022008                currentX
+                0x000000000002200c                currentY
+                0x0000000000022010                isStart
+                0x0000000000022014                isPainting
+ .bss           0x0000000000022018        0x8 kernel/game/pushbox.o
+                0x0000000000022018                pi
+                0x000000000002201c                pj
+ .bss           0x0000000000022020        0x8 kernel/game/smgame.o
+                0x0000000000022020                difficult
+                0x0000000000022021                tool
+                0x0000000000022022                died
+                0x0000000000022024                o
+ .bss           0x0000000000022028        0x0 kernel/game/guessnum.o
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(printf.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(vsprintf.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(misc.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(open.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(read.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(write.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(close.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(unlink.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(lseek.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(getpid.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(stat.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(fork.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(wait.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(exec.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(graphics.o)
+ .bss           0x0000000000022028        0x0 lib/orangescrt.a(kbhit.o)
  *(COMMON)
- *fill*         0x000000000001e0c8       0x18 
- COMMON         0x000000000001e0e0    0x2c9b0 kernel/global.o
-                0x000000000001e0e0                idt_ptr
-                0x000000000001e100                graphics_msg
-                0x000000000001e140                inode_table
-                0x000000000001ec40                task_stack
-                0x0000000000042c40                k_reenter
-                0x0000000000042c60                gdt
-                0x0000000000043060                current_console
-                0x0000000000043064                pcaller
-                0x0000000000043080                tty_table
-                0x00000000000456a0                tss
-                0x0000000000045720                fs_msg
-                0x0000000000045750                memory_size
-                0x0000000000045760                f_desc_table
-                0x0000000000045b60                root_inode
-                0x0000000000045b64                disp_pos
-                0x0000000000045b80                mm_msg
-                0x0000000000045bb0                key_pressed
-                0x0000000000045bb4                gdt_ptr
-                0x0000000000045bc0                idt
-                0x00000000000463c0                super_block
-                0x00000000000465a0                ticks
-                0x00000000000465c0                console_table
-                0x0000000000046b40                irq_table
-                0x0000000000046b80                p_proc_ready
-                0x0000000000046ba0                proc_table
- COMMON         0x000000000004aa90       0x10 kernel/hd.o
-                0x000000000004aa90                PARTITION_ENTRY
- COMMON         0x000000000004aaa0      0xa00 kernel/tools/fs.o
-                0x000000000004aaa0                files
- COMMON         0x000000000004b4a0      0xa00 kernel/tools/user.o
-                0x000000000004b4a0                users
- COMMON         0x000000000004bea0        0x0 graphics/main.o
- COMMON         0x000000000004bea0        0x4 kernel/game/tanchishe.o
-                0x000000000004bea0                Dir
- COMMON         0x000000000004bea4       0x14 kernel/game/pingtu.o
-                0x000000000004bea4                board
-                0x000000000004beb0                init_x
-                0x000000000004beb4                init_y
-                0x000000000004beb8                . = ALIGN ((. != 0x0)?0x4:0x1)
-                0x000000000004beb8                . = ALIGN (0x4)
-                0x000000000004beb8                . = SEGMENT_START ("ldata-segment", .)
-                0x000000000004beb8                . = ALIGN (0x4)
-                0x000000000004beb8                _end = .
-                0x000000000004beb8                PROVIDE (end, .)
-                0x000000000004beb8                . = DATA_SEGMENT_END (.)
+ *fill*         0x0000000000022028       0x18 
+ COMMON         0x0000000000022040    0x2c9b0 kernel/global.o
+                0x0000000000022040                idt_ptr
+                0x0000000000022060                graphics_msg
+                0x00000000000220a0                inode_table
+                0x0000000000022ba0                task_stack
+                0x0000000000046ba0                k_reenter
+                0x0000000000046bc0                gdt
+                0x0000000000046fc0                current_console
+                0x0000000000046fc4                pcaller
+                0x0000000000046fe0                tty_table
+                0x0000000000049600                tss
+                0x0000000000049680                fs_msg
+                0x00000000000496b0                memory_size
+                0x00000000000496c0                f_desc_table
+                0x0000000000049ac0                root_inode
+                0x0000000000049ac4                disp_pos
+                0x0000000000049ae0                mm_msg
+                0x0000000000049b10                key_pressed
+                0x0000000000049b14                gdt_ptr
+                0x0000000000049b20                idt
+                0x000000000004a320                super_block
+                0x000000000004a500                ticks
+                0x000000000004a520                console_table
+                0x000000000004aaa0                irq_table
+                0x000000000004aae0                p_proc_ready
+                0x000000000004ab00                proc_table
+ COMMON         0x000000000004e9f0       0x10 kernel/hd.o
+                0x000000000004e9f0                PARTITION_ENTRY
+ COMMON         0x000000000004ea00      0xa00 kernel/tools/fs.o
+                0x000000000004ea00                files
+ COMMON         0x000000000004f400      0xa00 kernel/tools/user.o
+                0x000000000004f400                users
+ COMMON         0x000000000004fe00        0x0 graphics/main.o
+ COMMON         0x000000000004fe00        0x4 kernel/game/tanchishe.o
+                0x000000000004fe00                Dir
+ COMMON         0x000000000004fe04       0x14 kernel/game/pintu.o
+                0x000000000004fe04                board
+                0x000000000004fe10                init_x
+                0x000000000004fe14                init_y
+ *fill*         0x000000000004fe18        0x8 
+ COMMON         0x000000000004fe20      0x1b0 kernel/game/chess.o
+                0x000000000004fe20                b
+                0x000000000004fe24                x
+                0x000000000004fe28                c
+                0x000000000004fe2c                d
+                0x000000000004fe30                a
+                0x000000000004fe40                chess
+ COMMON         0x000000000004ffd0        0x4 kernel/game/pushbox.o
+                0x000000000004ffd0                count
+ *fill*         0x000000000004ffd4        0xc 
+ COMMON         0x000000000004ffe0     0x2740 kernel/game/smgame.o
+                0x000000000004ffe0                map
+                0x00000000000526f0                _a
+                0x00000000000526f4                maxscore
+                0x00000000000526f8                na
+                0x00000000000526fc                score
+                0x0000000000052700                _b
+                0x0000000000052704                ny
+                0x0000000000052708                speed
+                0x000000000005270c                nb
+                0x0000000000052710                downtime
+                0x0000000000052714                st
+                0x0000000000052718                nowt
+                0x000000000005271c                nx
+                0x0000000000052720                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x0000000000052720                . = ALIGN (0x4)
+                0x0000000000052720                . = SEGMENT_START ("ldata-segment", .)
+                0x0000000000052720                . = ALIGN (0x4)
+                0x0000000000052720                _end = .
+                0x0000000000052720                PROVIDE (end, .)
+                0x0000000000052720                . = DATA_SEGMENT_END (.)
 
 .stab
  *(.stab)
@@ -1112,7 +1214,11 @@ LOAD lib/orangescrt.a
  .comment       0x0000000000000000       0x2c kernel/tools/calendar.o
  .comment       0x0000000000000000       0x2c kernel/game/tanchishe.o
  .comment       0x0000000000000000       0x2c kernel/tools/calculator.o
- .comment       0x0000000000000000       0x2c kernel/game/pingtu.o
+ .comment       0x0000000000000000       0x2c kernel/game/pintu.o
+ .comment       0x0000000000000000       0x2c kernel/game/chess.o
+ .comment       0x0000000000000000       0x2c kernel/game/pushbox.o
+ .comment       0x0000000000000000       0x2c kernel/game/smgame.o
+ .comment       0x0000000000000000       0x2c kernel/game/guessnum.o
  .comment       0x0000000000000000       0x2c lib/orangescrt.a(printf.o)
  .comment       0x0000000000000000       0x2c lib/orangescrt.a(vsprintf.o)
  .comment       0x0000000000000000       0x2c lib/orangescrt.a(misc.o)

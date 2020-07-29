@@ -157,7 +157,7 @@ PRIVATE void work()
     }
 }
 
-void runpingtu()
+void runpintu()
 {
 	
 
