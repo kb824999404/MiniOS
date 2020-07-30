@@ -172,10 +172,11 @@ void check_game_over() {
 	if_game_over = 1;
 }
 
+
 void move_left() {
-	int i, j, k = 0;
+	int i, j, k;
 	for (i = 0; i < 4; i++) {
-		for (j = 1; j < 4; j++) {
+		for (j = 1, k = 0; j < 4; j++) {
 			if (board[i][j] > 0) {
 				if (board[i][k] == board[i][j]) {
 					board[i][k] = board[i][k] * 2;
@@ -203,9 +204,9 @@ void move_left() {
 }
 
 void move_right() {
-	int i, j, k = 3;
+	int i, j, k;
 	for (i = 0; i < 4; i++) {
-		for (j = 2; j >= 0; j--) {
+		for (j = 2, k = 3; j >= 0; j--) {
 			if (board[i][j] > 0) {
 				if (board[i][k] == board[i][j]) {
 					board[i][k] = board[i][k] * 2;
@@ -236,9 +237,9 @@ void move_right() {
 }
 
 void move_up() {
-	int i, j, k = 0;
+	int i, j, k;
 	for (i = 0; i < 4; i++) {
-		for (j = 1; j < 4; j++) {
+		for (j = 1, k = 0; j < 4; j++) {
 			if (board[j][i] > 0) {
 				if (board[k][i] == board[j][i]) {
 					board[k][i] = board[k][i] * 2;
@@ -267,9 +268,9 @@ void move_up() {
 }
 
 void move_down() {
-	int i, j, k = 3;
+	int i, j, k;
 	for (i = 0; i < 4; i++) {
-		for (j = 2; j >= 0; j--) {
+		for (j = 2, k = 3; j >= 0; j--) {
 			if (board[j][i] > 0) {
 				if (board[k][i] == board[j][i]) {
 					board[k][i] = board[k][i] * 2;

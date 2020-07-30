@@ -24,14 +24,42 @@ void print_total_day(int year, int month, int day);
 void runcalendar() {
 	int year, month, day;
 	printf("Calendar\n");
-	printf("year:");
-	year=readint();
-	printf("month:");
-	month=readint();
-	printf("day:");
-	day=readint();
-	// printf("%d\t%d\t%d\n",year,month,day);
-	print_weekday(year, month, day);
+	printf("1.Print Weekday\n");
+	printf("2.Print Month\n");
+	printf("3.Print Total day\n");
+	printf("Enter your choice:");
+	int choice=readint();
+	switch (choice)
+	{
+	case 1:
+		printf("year:");
+		year=readint();
+		printf("month:");
+		month=readint();
+		printf("day:");
+		day=readint();
+		print_weekday(year, month, day);
+		break;
+	case 2:
+		printf("year:");
+		year=readint();
+		printf("month:");
+		month=readint();
+		print_month(year,month);
+		break;
+	case 3:
+		printf("year:");
+		year=readint();
+		printf("month:");
+		month=readint();
+		printf("day:");
+		day=readint();
+		print_total_day(year, month, day);
+		break;
+	default:
+		break;
+	}
+	printf("\n");
 	
 }
 
