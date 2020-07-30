@@ -1,3 +1,5 @@
 80m.img
 *.bin
 *.o
+doc/imgs/*
+doc/codes/*

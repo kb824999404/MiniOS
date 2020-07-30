@@ -30,7 +30,7 @@ bool died=0;
 int nowt;
 int st;
 int _a,_b;
-int o=0;//ÓÃÓÚ¸ôÐÐÉú³É'###'
+int o=0;//ç”¨äºŽéš”è¡Œç”Ÿæˆ'###'
 PRIVATE bool ifdied(){
     if(nx==1||nx==20||map[nx+1][ny]=='^')return 1;
     return 0;
@@ -65,7 +65,7 @@ PRIVATE void up(){
     if(df==12){
         map[19][mid-1]=map[19][mid]=map[19][mid+1]='#';
     }
-}//ÕûÌåÉÏÒÆ
+}//æ•´ä½“ä¸Šç§»
 PRIVATE void init(){
     st=time();
     speed=1000,score=0,downtime=20;
@@ -111,15 +111,15 @@ PRIVATE void now(){
         
     if(c=='a'||c=='A')
     {
-        if(map[nx][ny-1]!='#'&&map[nx][ny-1]!='^'&&map[nx][ny-1]!='>'&&map[nx][ny-1]!='<'&&map[nx][ny-1]!='-')go(0,-1);//×ó 
+        if(map[nx][ny-1]!='#'&&map[nx][ny-1]!='^'&&map[nx][ny-1]!='>'&&map[nx][ny-1]!='<'&&map[nx][ny-1]!='-')go(0,-1);//å·¦ 
     }
     else if(c=='d'||c=='D')
     {
-        if(map[nx][ny+1]!='#'&&map[nx][ny+1]!='^'&&map[nx][ny+1]!='>'&&map[nx][ny+1]!='<'&&map[nx][ny+1]!='-')go(0,1);//ÓÒ 
+        if(map[nx][ny+1]!='#'&&map[nx][ny+1]!='^'&&map[nx][ny+1]!='>'&&map[nx][ny+1]!='<'&&map[nx][ny+1]!='-')go(0,1);//å³ 
     }
     else if(c=='s'||c=='S')
     {
-        if(map[nx+1][ny+1]==' ')go(1,0);//ÏÂ
+        if(map[nx+1][ny+1]==' ')go(1,0);//ä¸‹
     }
     
         
